@@ -230,7 +230,7 @@ export default function QuestionnaireDetailPage({ params }: { params: Promise<{ 
                 </div>
                 <div className="space-y-2">
                     <Label>Tipe Jawaban</Label>
-                    <Select value={questionForm.type} onValueChange={(val) => setQuestionForm({...questionForm, type: val})}>
+                    <Select value={questionForm.type} onValueChange={(val) => setQuestionForm({...questionForm, type: val as string})}>
                         <SelectTrigger><SelectValue placeholder="Pilih tipe..." /></SelectTrigger>
                         <SelectContent>
                             <SelectItem value="likert">Skala Likert (1-5)</SelectItem>
