@@ -99,8 +99,11 @@ export default function SurveyPage() {
       const link = document.createElement("a");
       link.href = image;
       link.download = `Hasil_Survei_${project?.title?.replace(/\s+/g, '_') || 'StressIndex'}.png`;
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
     } catch (err) {
+      console.error("html2canvas error:", err);
       toast.error("Gagal mengunduh gambar");
     } finally {
       setIsExporting(false);
@@ -124,6 +127,7 @@ export default function SurveyPage() {
         toast.info("Browser Anda tidak mendukung Web Share API dengan gambar. Silakan unduh gambarnya saja.");
       }
     } catch (err: any) {
+      console.error("Share error:", err);
       if (err.name === 'AbortError') return; // User canceled the share dialog
       toast.info("Gagal membagikan (mungkin diblokir browser). Mengunduh gambar otomatis...");
       handleDownload();
@@ -539,7 +543,7 @@ export default function SurveyPage() {
               </div>
               
               <div className="mb-10 relative w-72 h-40 mx-auto flex flex-col items-center justify-end overflow-hidden mt-8">
-                 <svg className="w-full h-full overflow-visible" viewBox="0 0 100 50">
+                 <svg xmlns="http://www.w3.org/2000/svg" className="w-full h-full overflow-visible" viewBox="0 0 100 50">
                      <path 
                         d="M 10 50 A 40 40 0 0 1 90 50" 
                         fill="transparent" 
