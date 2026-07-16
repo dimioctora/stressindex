@@ -92,13 +92,13 @@ class SurveiDiagnosisStressKerjaSeeder extends Seeder
 
         // Options
         $optionsData = [
-            1 => 'Bila kondisi yang diuraikan tidak pernah menimbulkan stress',
-            2 => 'Bila kondisi yang diuraikan jarang sekali menimbulkan stress',
-            3 => 'Bila kondisi yang diuraikan jarang menimbulkan stress',
-            4 => 'Bila kondisi yang diuraikan kadang-kadang menimbulkan stress',
-            5 => 'Bila kondisi yang diuraikan sering menimbulkan stress',
-            6 => 'Bila kondisi yang diuraikan sering kali menimbulkan stress',
-            7 => 'Bila kondisi yang diuraikan selalu menimbulkan stress',
+            1 => 'Tidak pernah',
+            2 => 'Jarang sekali',
+            3 => 'Jarang',
+            4 => 'Kadang-kadang',
+            5 => 'Sering',
+            6 => 'Sering kali',
+            7 => 'Selalu',
         ];
 
         foreach ($questionsData as $idx => $q) {

@@ -14,19 +14,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2, ShieldCheck, User, Loader2, Downlo
 import { fetchApi } from "@/lib/api";
 import { toast } from "sonner";
 
-const highlightDistinguishingWords = (text: string) => {
-  const keywords = ["tidak pernah", "jarang sekali", "jarang", "kadang-kadang", "sering kali", "sering", "selalu"];
-  for (const keyword of keywords) {
-    const regex = new RegExp(`(${keyword})`, 'i');
-    if (regex.test(text)) {
-      const parts = text.split(regex);
-      return parts.map((part, i) => 
-        regex.test(part) ? <strong key={i} className="font-extrabold text-blue-900">{part}</strong> : part
-      );
-    }
-  }
-  return text;
-};
+// Using plain text for short options
 
 export default function SurveyPage() {
   const params = useParams();
@@ -495,7 +483,7 @@ export default function SurveyPage() {
                               {isSelected && <div className="w-3 h-3 bg-blue-600 rounded-full shadow-sm" />}
                            </div>
                            <span className={`font-semibold text-left ${isSelected ? "text-blue-700" : "text-slate-700"}`}>
-                              {highlightDistinguishingWords(option.text)}
+                              {option.text}
                            </span>
                         </div>
                       </button>
