@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart3, Activity, Heart, Shield, Users, Target, Building2, CheckCircle2 } from "lucide-react";
+import TrialTestMenu from "@/components/TrialTestMenu";
 
 export default function TentangPage() {
   return (
@@ -23,8 +24,7 @@ export default function TentangPage() {
             <Link href="/kontak" className="text-slate-500 hover:text-slate-900 transition-colors">Kontak</Link>
           </nav>
           <div className="flex items-center gap-3">
-            <Button variant="ghost" className="hidden sm:inline-flex rounded-full px-5 text-slate-600 hover:text-slate-900 font-medium">Masuk</Button>
-            <Link href="/demo"><Button className="rounded-full px-6 bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20 font-medium transition-all">Coba Demo</Button></Link>
+            <TrialTestMenu />
           </div>
         </div>
       </header>
