@@ -295,8 +295,8 @@ export default function SurveyPage() {
         {step === "register" && (
            <div className="w-full max-w-xl">
              <div className="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100 p-8 md:p-12">
-                <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-6 border border-blue-100 shadow-sm">
-                   <User className="w-8 h-8 text-blue-600" />
+                <div className="mb-8">
+                   <img src="/images/roe-new-logo-utama.png" alt="ROE Indonesia Logo" className="h-12 md:h-16 object-contain" />
                 </div>
                 <h1 className="text-3xl font-extrabold text-slate-900 mb-2 tracking-tight">Registrasi Responden</h1>
                 <p className="text-slate-500 mb-8 leading-relaxed font-medium">

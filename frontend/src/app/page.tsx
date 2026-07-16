@@ -10,18 +10,18 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col bg-white overflow-hidden">
       {/* HEADER */}
-      <header className="fixed top-0 z-50 w-full border-b border-slate-200/50 bg-white/70 backdrop-blur-xl supports-[backdrop-filter]:bg-white/40">
+      <header className="fixed top-0 z-50 w-full border-b border-white/10 bg-indigo-950/80 backdrop-blur-xl supports-[backdrop-filter]:bg-indigo-950/60">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-8">
           <div className="flex items-center gap-2.5">
             <img src="/images/roe-icon.png" alt="StressIndex Logo" className="h-8 w-8 object-contain" />
-            <span className="text-xl font-extrabold tracking-tight text-slate-900 leading-none">STRESS<span className="text-blue-600">INDEX</span></span>
+            <span className="text-xl font-extrabold tracking-tight text-white leading-none">STRESS<span className="text-blue-400">INDEX</span></span>
           </div>
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
-            <Link href="/" className="text-slate-900 font-semibold hover:text-blue-600 transition-colors relative after:absolute after:bottom-[-20px] after:left-0 after:w-full after:h-0.5 after:bg-blue-600">Beranda</Link>
-            <Link href="/tentang" className="text-slate-500 hover:text-slate-900 transition-colors">Tentang</Link>
-            <Link href="/fitur" className="text-slate-500 hover:text-slate-900 transition-colors">Fitur</Link>
-            <Link href="/manfaat" className="text-slate-500 hover:text-slate-900 transition-colors">Manfaat</Link>
-            <Link href="/kontak" className="text-slate-500 hover:text-slate-900 transition-colors">Kontak</Link>
+            <Link href="/" className="text-white font-semibold relative after:absolute after:bottom-[-20px] after:left-0 after:w-full after:h-0.5 after:bg-blue-400">Beranda</Link>
+            <Link href="/tentang" className="text-indigo-200 hover:text-white transition-colors">Tentang</Link>
+            <Link href="/fitur" className="text-indigo-200 hover:text-white transition-colors">Fitur</Link>
+            <Link href="/manfaat" className="text-indigo-200 hover:text-white transition-colors">Manfaat</Link>
+            <Link href="/kontak" className="text-indigo-200 hover:text-white transition-colors">Kontak</Link>
           </nav>
           <div className="flex items-center gap-3">
             <TrialTestMenu />
@@ -29,37 +29,46 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="flex-1 relative pt-16">
-        {/* Dynamic Premium Background */}
-        <div className="absolute inset-0 -z-10 h-full w-full bg-gradient-to-b from-blue-50/60 via-slate-50/30 to-white overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:24px_24px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-40"></div>
-          <div className="absolute top-0 right-0 -translate-y-12 translate-x-1/3 w-[800px] h-[600px] rounded-full bg-gradient-to-br from-indigo-400/20 to-purple-400/20 blur-[120px] pointer-events-none"></div>
+      <main className="flex-1 relative">
+        {/* HERO SECTION WITH CURVED BACKGROUND */}
+        <div className="relative bg-gradient-to-br from-indigo-900 via-blue-900 to-indigo-950 pb-20 pt-28 md:pt-40 md:pb-32 overflow-hidden">
+          {/* Dynamic Premium Background Shapes */}
+          <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:24px_24px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-10"></div>
+          <div className="absolute top-0 right-0 -translate-y-12 translate-x-1/3 w-[800px] h-[600px] rounded-full bg-gradient-to-br from-purple-500/20 to-pink-500/20 blur-[120px] pointer-events-none"></div>
           <div className="absolute top-32 left-0 -translate-x-1/3 w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-blue-400/20 to-cyan-400/20 blur-[120px] pointer-events-none"></div>
-        </div>
+          
+          <section className="container mx-auto px-4 md:px-8 relative z-10 grid md:grid-cols-2 gap-14 items-center">
+            <div className="flex flex-col gap-6 md:pr-8">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-blue-100 text-xs font-semibold tracking-wide w-fit mb-2 backdrop-blur-sm">
+                <span className="flex h-2 w-2 rounded-full bg-blue-400 animate-pulse"></span>
+                PLATFORM PENILAIAN PSIKOLOGIS V2.0
+              </div>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
+                Ukur. Pahami.<br />
+                Tingkatkan <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">Kesejahteraan</span> Anda.
+              </h1>
+              <p className="text-lg text-indigo-100 max-w-[500px] leading-relaxed font-medium">
+                Stress Index adalah platform digital kelas *enterprise* untuk mengukur dan menganalisis tingkat stres karyawan secara ilmiah, *real-time*, dan akurat.
+              </p>
+              <div className="flex flex-wrap items-center gap-4 pt-6">
+                <Link href="/demo"><Button size="lg" className="h-12 px-8 text-base rounded-full shadow-lg shadow-blue-900/50 bg-white text-blue-700 hover:bg-blue-50 hover:-translate-y-0.5 transition-all duration-200">Mulai Survei</Button></Link>
+                <Link href="/demo"><Button size="lg" variant="outline" className="h-12 px-8 text-base gap-2 rounded-full border-white/30 text-white hover:bg-white/10 hover:border-white/50 transition-all">
+                  <Play className="h-4 w-4 text-blue-300" fill="currentColor" /> Lihat Demo
+                </Button></Link>
+              </div>
+            </div>
+            <HeroGraphic />
+          </section>
 
-        {/* HERO SECTION */}
-        <section className="container mx-auto px-4 md:px-8 py-20 md:py-32 grid md:grid-cols-2 gap-14 items-center">
-          <div className="flex flex-col gap-6 md:pr-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-semibold tracking-wide w-fit mb-2 shadow-sm">
-              <span className="flex h-2 w-2 rounded-full bg-blue-600 animate-pulse"></span>
-              PLATFORM PENILAIAN PSIKOLOGIS V2.0
-            </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.1]">
-              Ukur. Pahami.<br />
-              Tingkatkan <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500">Kesejahteraan</span> Anda.
-            </h1>
-            <p className="text-lg text-slate-500 max-w-[500px] leading-relaxed font-medium">
-              Stress Index adalah platform digital kelas *enterprise* untuk mengukur dan menganalisis tingkat stres karyawan secara ilmiah, *real-time*, dan akurat.
-            </p>
-            <div className="flex flex-wrap items-center gap-4 pt-6">
-              <Link href="/demo"><Button size="lg" className="h-12 px-8 text-base rounded-full shadow-lg shadow-blue-500/25 bg-blue-600 hover:bg-blue-700 hover:-translate-y-0.5 transition-all duration-200">Mulai Survei</Button></Link>
-              <Link href="/demo"><Button size="lg" variant="outline" className="h-12 px-8 text-base gap-2 rounded-full border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all">
-                <Play className="h-4 w-4 text-blue-600" fill="currentColor" /> Lihat Demo
-              </Button></Link>
-            </div>
+          {/* Curved Edge SVG */}
+          <div className="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-10 translate-y-[1px]">
+            <svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="relative block w-full h-[100px] md:h-[220px]">
+              <path fill="rgba(255,255,255,0.15)" d="M0,128L48,138.7C96,149,192,171,288,165.3C384,160,480,128,576,133.3C672,139,768,181,864,197.3C960,213,1056,203,1152,181.3C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+              <path fill="rgba(255,255,255,0.3)" d="M0,192L48,181.3C96,171,192,149,288,149.3C384,149,480,171,576,197.3C672,224,768,256,864,250.7C960,245,1056,203,1152,176C1248,149,1344,139,1392,133.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+              <path fill="#ffffff" d="M0,256L48,245.3C96,235,192,213,288,218.7C384,224,480,256,576,261.3C672,267,768,245,864,224C960,203,1056,181,1152,170.7C1248,160,1344,160,1392,160L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            </svg>
           </div>
-          <HeroGraphic />
-        </section>
+        </div>
 
         {/* FEATURES SECTION */}
         <section className="container mx-auto px-4 py-24 text-center">
