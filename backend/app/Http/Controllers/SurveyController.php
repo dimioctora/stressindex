@@ -64,6 +64,7 @@ class SurveyController extends Controller
                 'description' => $questionnaire->description,
                 'has_timer' => (bool)$questionnaire->has_timer,
                 'timer_seconds' => $questionnaire->timer_seconds,
+                'allow_anonymous' => (bool)$questionnaire->allow_anonymous,
             ],
             'questions' => $questions
         ]);
