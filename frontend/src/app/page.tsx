@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Play, ClipboardList, Zap, BarChart3, ShieldCheck, Download, QrCode } from "lucide-react";
@@ -91,24 +92,25 @@ export default function Home() {
           <div className="container mx-auto px-4 text-center">
             <p className="text-sm font-medium text-slate-500 mb-8 uppercase tracking-widest">Dipercaya oleh organisasi yang peduli pada manusia</p>
             <div className="flex flex-wrap justify-center items-center gap-10 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-              {/* Logo Bank Indonesia Mock */}
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-full bg-blue-900 text-white flex items-center justify-center font-serif font-bold text-xl">B</div> 
-                <div className="text-left leading-none"><div className="font-bold text-blue-900 text-sm">BANK INDONESIA</div><div className="text-[8px] tracking-widest">BANK SENTRAL REPUBLIK INDONESIA</div></div>
+              {/* Logo Bank Indonesia */}
+              <div className="relative h-12 w-48 transition-all hover:scale-105">
+                <Image src="/logos/bi.png" alt="Bank Indonesia" fill className="object-contain" />
               </div>
-              {/* Logo Mandiri Mock */}
-              <div className="text-2xl font-bold text-blue-800 tracking-tighter">mandiri</div>
-              {/* Logo BCA Mock */}
-              <div className="text-3xl font-extrabold italic text-blue-900 tracking-tighter">BCA</div>
-              {/* Logo Pertamina Mock */}
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rotate-45 bg-blue-600 rounded-sm"></div> 
-                <div className="text-xl font-bold text-red-600 tracking-wide">PERTAMINA</div>
+              {/* Logo Mandiri */}
+              <div className="relative h-10 w-32 transition-all hover:scale-105">
+                <Image src="/logos/mandiri.png" alt="Bank Mandiri" fill className="object-contain" />
               </div>
-              {/* Logo Telkom Mock */}
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-red-600"></div> 
-                <div className="text-lg font-bold text-slate-800 leading-tight">Telkom<br/>Indonesia</div>
+              {/* Logo BCA */}
+              <div className="relative h-12 w-32 transition-all hover:scale-105">
+                <Image src="/logos/bca.png" alt="BCA" fill className="object-contain" />
+              </div>
+              {/* Logo Pertamina */}
+              <div className="relative h-10 w-40 transition-all hover:scale-105">
+                <Image src="/logos/pertamina.png" alt="Pertamina" fill className="object-contain" />
+              </div>
+              {/* Logo Telkom */}
+              <div className="relative h-14 w-32 transition-all hover:scale-105">
+                <Image src="/logos/telkom.png" alt="Telkom Indonesia" fill className="object-contain" />
               </div>
             </div>
           </div>
