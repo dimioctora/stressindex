@@ -631,9 +631,13 @@ export default function SurveyPage() {
         )}
       </main>
       
-      <div className="py-8 text-center text-xs font-semibold tracking-wide text-slate-400 flex items-center justify-center gap-2">
-         <ShieldCheck className="w-4 h-4 text-emerald-500" /> Data Anda dilindungi oleh enkripsi E2EE dan mematuhi standar privasi enterprise.
-      </div>
+      <footer className="py-6 text-center text-sm font-semibold text-slate-400 mt-auto flex items-center justify-center gap-2">
+         <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
+         <span className="text-left">
+           Data anda telah dilindungi oleh standar privasi enterprise<br/>
+           ROEIndonesia copyright c2026
+         </span>
+      </footer>
     </div>
   );
 }
