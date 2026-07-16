@@ -278,7 +278,7 @@ export default function SurveyPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50">
+    <div className="min-h-screen flex flex-col bg-slate-50 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white via-slate-50 to-slate-100">
       <header className="bg-white border-b px-4 md:px-8 py-4 flex items-center justify-between shadow-sm sticky top-0 z-50">
          <div className="font-extrabold tracking-tight text-slate-900 flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center shadow-sm shadow-blue-500/30">SI</div>
@@ -473,57 +473,73 @@ export default function SurveyPage() {
         )}
 
         {step === "survey" && currentQuestion && (
-           <div className="w-full max-w-2xl">
-             <div className="mb-10">
-               <div className="flex justify-between items-end mb-3">
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                    Bagian 1: {questionnaire.title}
+           <div className="w-full max-w-2xl animate-in fade-in slide-in-from-bottom-4 duration-500" key={currentQuestion.id}>
+             <div className="mb-8 px-2">
+               <div className="flex justify-between items-end mb-4">
+                  <span className="text-sm font-black text-slate-400 uppercase tracking-widest">
+                    {questionnaire.title}
                   </span>
-                  <span className="text-sm font-extrabold text-blue-600">
-                    {currentIndex + 1} <span className="text-slate-400 font-medium">/ {questions.length}</span>
-                  </span>
+                  <div className="bg-white/80 backdrop-blur-sm px-4 py-1.5 rounded-full shadow-sm border border-slate-100 flex items-center gap-2">
+                     <span className="text-sm font-extrabold text-blue-600">{currentIndex + 1}</span>
+                     <span className="text-slate-300">/</span>
+                     <span className="text-sm font-bold text-slate-500">{questions.length}</span>
+                  </div>
                </div>
-               <Progress value={progress} className="h-2.5 bg-slate-200" />
+               <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                 <div 
+                   className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-500 ease-out rounded-full"
+                   style={{ width: `${progress}%` }}
+                 />
+               </div>
              </div>
 
-             <div className="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100 p-8 md:p-12 mb-8 transition-all">
-                <div className="mb-2 flex justify-between items-center">
-                   <span className="inline-flex px-3 py-1 bg-blue-50 text-blue-600 border border-blue-100 rounded-full text-xs font-bold mb-4 tracking-wide shadow-sm">
+             <div className="bg-white/90 backdrop-blur-xl rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/50 p-6 sm:p-10 md:p-12 mb-8 relative overflow-hidden">
+                {/* Decorative blob */}
+                <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+                
+                <div className="relative z-10 mb-6 flex justify-between items-start">
+                   <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-br from-blue-50 to-indigo-50 text-blue-700 border border-blue-100/50 rounded-2xl text-xs font-extrabold tracking-wide shadow-sm">
+                     <div className="w-1.5 h-1.5 bg-blue-600 rounded-full animate-pulse" />
                      {currentQuestion.dimension_name}
-                   </span>
+                   </div>
                    {timeLeft !== null && (
-                     <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold mb-4 ${timeLeft <= 10 ? 'bg-red-100 text-red-600 animate-pulse' : 'bg-slate-100 text-slate-700 border border-slate-200'}`}>
+                     <div className={`flex items-center gap-2 px-4 py-2 rounded-2xl text-sm font-bold shadow-sm backdrop-blur-md ${timeLeft <= 10 ? 'bg-red-50 text-red-600 border border-red-100 animate-pulse' : 'bg-white/80 text-slate-700 border border-slate-100'}`}>
                        <Timer className="w-4 h-4" />
-                       <span>{timeLeft}s</span>
+                       <span className="tabular-nums">{timeLeft}s</span>
                      </div>
                    )}
                 </div>
-                <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 leading-[1.3] mb-10 tracking-tight">
+
+                <h2 className="relative z-10 text-2xl sm:text-3xl md:text-4xl font-black text-slate-800 leading-[1.3] mb-12 tracking-tight text-center">
                   "{currentQuestion.text}"
                 </h2>
 
-                <div className="flex flex-col gap-3.5">
-                  {currentQuestion.options?.map((option: any) => {
+                <div className="relative z-10 flex flex-col gap-3">
+                  {currentQuestion.options?.map((option: any, idx: number) => {
                     const isSelected = answers[currentQuestion.id] === option.score_value;
                     return (
                       <button
                         key={option.id}
                         onClick={() => handleSelect(option.score_value)}
-                        className={`w-full flex items-center justify-between p-4 rounded-2xl border-2 transition-all duration-300 outline-none ${
+                        className={`group relative w-full flex items-center p-5 sm:p-6 rounded-3xl border-2 transition-all duration-300 outline-none overflow-hidden ${
                           isSelected 
-                            ? "border-blue-600 bg-blue-50/50 shadow-md shadow-blue-500/10 scale-[1.02]" 
-                            : "border-slate-100 hover:border-slate-300 hover:bg-slate-50 focus:border-blue-300 focus:bg-blue-50/30"
+                            ? "border-blue-600 bg-gradient-to-r from-blue-50 to-indigo-50/30 shadow-lg shadow-blue-500/10 scale-[1.02]" 
+                            : "border-slate-100 bg-white hover:border-slate-200 hover:bg-slate-50 hover:shadow-md focus:border-blue-300 focus:bg-blue-50/20"
                         }`}
+                        style={{ animationDelay: `${idx * 100}ms` }}
                       >
-                        <div className="flex items-center gap-4">
-                           <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
-                             isSelected ? "border-blue-600" : "border-slate-300"
-                           }`}>
-                              {isSelected && <div className="w-3 h-3 bg-blue-600 rounded-full shadow-sm" />}
-                           </div>
-                           <span className={`font-semibold text-left ${isSelected ? "text-blue-700" : "text-slate-700"}`}>
+                        {isSelected && (
+                           <div className="absolute inset-0 bg-blue-600/5 opacity-100 transition-opacity" />
+                        )}
+                        <div className="relative z-10 flex items-center justify-between w-full gap-4">
+                           <span className={`text-lg sm:text-xl font-bold text-left transition-colors ${isSelected ? "text-blue-700" : "text-slate-700 group-hover:text-slate-900"}`}>
                               {option.text}
                            </span>
+                           <div className={`shrink-0 w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
+                             isSelected ? "border-blue-600 bg-blue-600" : "border-slate-200 bg-slate-50 group-hover:border-slate-300"
+                           }`}>
+                              {isSelected && <CheckCircle2 className="w-5 h-5 text-white" />}
+                           </div>
                         </div>
                       </button>
                     );
@@ -531,29 +547,29 @@ export default function SurveyPage() {
                 </div>
              </div>
 
-             <div className="flex items-center justify-between">
+             <div className="flex items-center justify-between gap-4 px-2">
                 <Button 
                   variant="outline" 
                   size="lg" 
                   onClick={handlePrev} 
                   disabled={currentIndex === 0 || isSubmitting}
-                  className="rounded-full px-6 text-slate-600 border-slate-200 hover:bg-slate-50 hover:border-slate-300 font-semibold h-12"
+                  className="rounded-2xl px-6 text-slate-500 border-slate-200 hover:bg-white hover:text-slate-800 hover:border-slate-300 font-bold h-14 bg-white/50 backdrop-blur-sm"
                 >
-                  <ArrowLeft className="w-4 h-4 mr-2" /> Sebelumnya
+                  <ArrowLeft className="w-5 h-5 sm:mr-2" /> <span className="hidden sm:inline">Sebelumnya</span>
                 </Button>
                 
                 <Button 
                   size="lg" 
                   onClick={handleNext}
                   disabled={!hasAnsweredCurrent || isSubmitting}
-                  className="rounded-full px-8 shadow-lg shadow-blue-500/25 bg-blue-600 hover:bg-blue-700 font-bold h-12 transition-all disabled:opacity-50 disabled:shadow-none"
+                  className="flex-1 max-w-[200px] rounded-2xl shadow-xl shadow-blue-500/25 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold h-14 transition-all disabled:opacity-50 disabled:shadow-none"
                 >
                   {isSubmitting ? (
-                     "Memproses..."
+                     <Loader2 className="w-6 h-6 animate-spin" />
                   ) : currentIndex === questions.length - 1 ? (
-                    <>Kirim Jawaban <CheckCircle2 className="w-5 h-5 ml-2" /></>
+                    <>Selesai <CheckCircle2 className="w-5 h-5 ml-2" /></>
                   ) : (
-                    <>Selanjutnya <ArrowRight className="w-5 h-5 ml-2" /></>
+                    <>Lanjut <ArrowRight className="w-5 h-5 ml-2" /></>
                   )}
                 </Button>
              </div>
