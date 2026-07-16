@@ -10,9 +10,23 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, ArrowRight, CheckCircle2, ShieldCheck, User, Loader2, Download, Share2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, ShieldCheck, User, Loader2, Download, Share2, Timer } from "lucide-react";
 import { fetchApi } from "@/lib/api";
 import { toast } from "sonner";
+
+const highlightDistinguishingWords = (text: string) => {
+  const keywords = ["tidak pernah", "jarang sekali", "jarang", "kadang-kadang", "sering kali", "sering", "selalu"];
+  for (const keyword of keywords) {
+    const regex = new RegExp(`(${keyword})`, 'i');
+    if (regex.test(text)) {
+      const parts = text.split(regex);
+      return parts.map((part, i) => 
+        regex.test(part) ? <strong key={i} className="font-extrabold text-blue-900">{part}</strong> : part
+      );
+    }
+  }
+  return text;
+};
 
 export default function SurveyPage() {
   const params = useParams();
@@ -49,6 +63,32 @@ export default function SurveyPage() {
   
   const resultRef = useRef<HTMLDivElement>(null);
   const [isExporting, setIsExporting] = useState(false);
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
+
+  // Handle countdown initialization
+  useEffect(() => {
+    if (step === "survey" && questionnaire?.has_timer && questionnaire?.timer_seconds && !isSubmitting && step !== "result") {
+      setTimeLeft(questionnaire.timer_seconds);
+    } else {
+      setTimeLeft(null);
+    }
+  }, [currentIndex, questionnaire, step, isSubmitting]);
+
+  // Handle countdown tick
+  useEffect(() => {
+    if (timeLeft === null || step !== "survey" || isSubmitting) return;
+    
+    if (timeLeft === 0) {
+      handleNext();
+      return;
+    }
+    
+    const timer = setInterval(() => {
+      setTimeLeft(prev => prev !== null && prev > 0 ? prev - 1 : 0);
+    }, 1000);
+    
+    return () => clearInterval(timer);
+  }, [timeLeft, step, isSubmitting, currentIndex, questions]);
 
   const handleDownload = async () => {
     if (!resultRef.current) return;
@@ -416,10 +456,16 @@ export default function SurveyPage() {
              </div>
 
              <div className="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100 p-8 md:p-12 mb-8 transition-all">
-                <div className="mb-2">
+                <div className="mb-2 flex justify-between items-center">
                    <span className="inline-flex px-3 py-1 bg-blue-50 text-blue-600 border border-blue-100 rounded-full text-xs font-bold mb-4 tracking-wide shadow-sm">
                      {currentQuestion.dimension_name}
                    </span>
+                   {timeLeft !== null && (
+                     <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold mb-4 ${timeLeft <= 10 ? 'bg-red-100 text-red-600 animate-pulse' : 'bg-slate-100 text-slate-700 border border-slate-200'}`}>
+                       <Timer className="w-4 h-4" />
+                       <span>{timeLeft}s</span>
+                     </div>
+                   )}
                 </div>
                 <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 leading-[1.3] mb-10 tracking-tight">
                   "{currentQuestion.text}"
@@ -445,7 +491,7 @@ export default function SurveyPage() {
                               {isSelected && <div className="w-3 h-3 bg-blue-600 rounded-full shadow-sm" />}
                            </div>
                            <span className={`font-semibold text-left ${isSelected ? "text-blue-700" : "text-slate-700"}`}>
-                              {option.text}
+                              {highlightDistinguishingWords(option.text)}
                            </span>
                         </div>
                       </button>

@@ -52,6 +52,26 @@ class QuestionnaireController extends Controller
         return response()->json(['message' => 'Questionnaire created', 'data' => $questionnaire], 201);
     }
 
+    public function update(Request $request, $id)
+    {
+        $questionnaire = Questionnaire::find($id);
+        if (!$questionnaire) {
+            return response()->json(['message' => 'Not found'], 404);
+        }
+
+        $validated = $request->validate([
+            'title' => 'sometimes|string|max:255',
+            'description' => 'nullable|string',
+            'is_active' => 'sometimes|boolean',
+            'has_timer' => 'sometimes|boolean',
+            'timer_seconds' => 'nullable|integer|min:1'
+        ]);
+
+        $questionnaire->update($validated);
+
+        return response()->json(['message' => 'Questionnaire updated', 'data' => $questionnaire]);
+    }
+
     public function show($id)
     {
         $questionnaire = Questionnaire::with(['dimensions' => function($q) {
@@ -121,5 +141,78 @@ class QuestionnaireController extends Controller
         $question = $dimension->questions()->create($validated);
 
         return response()->json(['message' => 'Question created', 'data' => $question], 201);
+    }
+
+    public function updateQuestion(Request $request, $id)
+    {
+        $question = \App\Models\Question::find($id);
+        if (!$question) {
+            return response()->json(['message' => 'Question Not found'], 404);
+        }
+
+        $validated = $request->validate([
+            'text' => 'sometimes|string',
+            'type' => 'sometimes|in:likert,text,multiple_choice',
+            'is_required' => 'sometimes|boolean',
+            'order' => 'sometimes|integer'
+        ]);
+
+        $question->update($validated);
+
+        return response()->json(['message' => 'Question updated', 'data' => $question]);
+    }
+
+    public function deleteQuestion($id)
+    {
+        $question = \App\Models\Question::find($id);
+        if (!$question) {
+            return response()->json(['message' => 'Question Not found'], 404);
+        }
+
+        $question->delete();
+
+        return response()->json(['message' => 'Question deleted successfully']);
+    }
+
+    public function getActive()
+    {
+        $questionnaires = Questionnaire::where('is_active', true)->get(['id', 'title', 'description']);
+        return response()->json($questionnaires);
+    }
+
+    public function showPublic($id)
+    {
+        $questionnaire = Questionnaire::with(['dimensions' => function($q) {
+            $q->with(['questions' => function($q2) {
+                $q2->orderBy('order', 'asc');
+            }]);
+        }])->where('is_active', true)->find($id);
+
+        if (!$questionnaire) {
+            return response()->json(['message' => 'Not found'], 404);
+        }
+
+        // Flatten questions for easier frontend rendering (similar to SurveyController)
+        $questions = [];
+        foreach ($questionnaire->dimensions as $dimension) {
+            foreach ($dimension->questions as $question) {
+                $q = $question->toArray();
+                $q['dimension_name'] = $dimension->name;
+                $questions[] = $q;
+            }
+        }
+
+        usort($questions, function ($a, $b) {
+            return $a['order'] <=> $b['order'];
+        });
+
+        return response()->json([
+            'id' => $questionnaire->id,
+            'title' => $questionnaire->title,
+            'description' => $questionnaire->description,
+            'has_timer' => (bool)$questionnaire->has_timer,
+            'timer_seconds' => $questionnaire->timer_seconds,
+            'questions' => $questions
+        ]);
     }
 }

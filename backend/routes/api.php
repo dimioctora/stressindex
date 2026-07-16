@@ -29,16 +29,25 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
     Route::get('/questionnaires', [QuestionnaireController::class, 'index']);
     Route::post('/questionnaires', [QuestionnaireController::class, 'store']);
     Route::get('/questionnaires/{id}', [QuestionnaireController::class, 'show']);
+    Route::put('/questionnaires/{id}', [QuestionnaireController::class, 'update']);
     Route::post('/questionnaires/{id}/dimensions', [QuestionnaireController::class, 'storeDimension']);
     
     // Dimension Questions
     Route::get('/dimensions/{dimensionId}/questions', [QuestionnaireController::class, 'getQuestions']);
     Route::post('/dimensions/{dimensionId}/questions', [QuestionnaireController::class, 'storeQuestion']);
+    
+    // Questions (Edit & Delete)
+    Route::put('/questions/{id}', [QuestionnaireController::class, 'updateQuestion']);
+    Route::delete('/questions/{id}', [QuestionnaireController::class, 'deleteQuestion']);
+    
     Route::get('/settings', [SettingController::class, 'index']);
     Route::apiResource('/administrators', UserController::class);
 });
 
 Route::prefix('public')->group(function () {
+    Route::get('/projects', [ProjectController::class, 'getActive']);
+    Route::get('/questionnaires', [QuestionnaireController::class, 'getActive']);
+    Route::get('/questionnaires/{id}', [QuestionnaireController::class, 'showPublic']);
     Route::get('/surveys/{projectId}', [SurveyController::class, 'show']);
     Route::post('/surveys/{projectId}/submit', [SurveyController::class, 'submit']);
 });

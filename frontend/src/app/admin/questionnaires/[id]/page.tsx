@@ -4,13 +4,15 @@ import { use, useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Loader2, ArrowLeft, Layers, Plus, CheckCircle2, FileQuestion, X, Check } from "lucide-react"
+import { Loader2, ArrowLeft, Layers, Plus, CheckCircle2, FileQuestion, X, Check, Timer, Pencil, Trash2 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Switch } from "@/components/ui/switch"
 import Link from "next/link"
-import { fetchApi } from "@/lib/api";
+import { fetchApi } from "@/lib/api"
+import { toast } from "sonner"
 
 export default function QuestionnaireDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
@@ -26,6 +28,10 @@ export default function QuestionnaireDetailPage({ params }: { params: Promise<{ 
   const [questions, setQuestions] = useState<any[]>([]);
   const [isQuestionsLoading, setIsQuestionsLoading] = useState(false);
   const [questionForm, setQuestionForm] = useState({ text: '', type: 'likert' });
+  const [editingQuestionId, setEditingQuestionId] = useState<number | null>(null);
+  const [hasTimer, setHasTimer] = useState(false);
+  const [timerSeconds, setTimerSeconds] = useState<number | ''>('');
+  const [isSavingTimer, setIsSavingTimer] = useState(false);
 
   const fetchDetail = () => {
     fetchApi(`/admin/questionnaires/${id}`)
@@ -35,6 +41,8 @@ export default function QuestionnaireDetailPage({ params }: { params: Promise<{ 
       })
       .then(data => {
         setQuestionnaire(data);
+        setHasTimer(data.has_timer || false);
+        setTimerSeconds(data.timer_seconds || '');
         setLoading(false);
       })
       .catch(err => {
@@ -42,6 +50,26 @@ export default function QuestionnaireDetailPage({ params }: { params: Promise<{ 
         setError(err.message);
         setLoading(false);
       });
+  };
+
+  const handleSaveTimer = async () => {
+    setIsSavingTimer(true);
+    try {
+      const res = await fetchApi(`/admin/questionnaires/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          has_timer: hasTimer,
+          timer_seconds: hasTimer ? (Number(timerSeconds) || null) : null
+        })
+      });
+      if (!res.ok) throw new Error("Gagal menyimpan pengaturan timer.");
+      toast.success("Pengaturan waktu berhasil disimpan.");
+    } catch (err: any) {
+      toast.error(err.message);
+    } finally {
+      setIsSavingTimer(false);
+    }
   };
 
   useEffect(() => {
@@ -60,20 +88,54 @@ export default function QuestionnaireDetailPage({ params }: { params: Promise<{ 
     setIsQuestionsLoading(false);
   };
 
-  const handleAddQuestion = async () => {
+  const handleSaveQuestion = async () => {
     if(!selectedDimension || !questionForm.text) return;
     try {
-      const res = await fetchApi(`/admin/dimensions/${selectedDimension.id}/questions`, {
-        method: 'POST',
+      const url = editingQuestionId 
+        ? `/admin/questions/${editingQuestionId}`
+        : `/admin/dimensions/${selectedDimension.id}/questions`;
+      
+      const res = await fetchApi(url, {
+        method: editingQuestionId ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(questionForm)
       });
       if(res.ok) {
         setQuestionForm({ text: '', type: 'likert' });
+        setEditingQuestionId(null);
         fetchQuestions(selectedDimension.id);
         fetchDetail();
+        toast.success(editingQuestionId ? "Soal berhasil diperbarui" : "Soal berhasil ditambahkan");
       }
-    } catch(err) { console.error(err); }
+    } catch(err) { 
+      toast.error("Gagal menyimpan soal");
+      console.error(err); 
+    }
+  };
+
+  const handleEditQuestionClick = (q: any) => {
+    setEditingQuestionId(q.id);
+    setQuestionForm({ text: q.text, type: q.type });
+  };
+
+  const handleCancelEdit = () => {
+    setEditingQuestionId(null);
+    setQuestionForm({ text: '', type: 'likert' });
+  };
+
+  const handleDeleteQuestion = async (qId: number) => {
+    if(!confirm("Apakah Anda yakin ingin menghapus soal ini?")) return;
+    try {
+      const res = await fetchApi(`/admin/questions/${qId}`, { method: 'DELETE' });
+      if(res.ok) {
+        fetchQuestions(selectedDimension!.id);
+        fetchDetail();
+        toast.success("Soal berhasil dihapus");
+      }
+    } catch(err) {
+      toast.error("Gagal menghapus soal");
+      console.error(err);
+    }
   };
 
   const handleAddDimension = async () => {
@@ -151,6 +213,32 @@ export default function QuestionnaireDetailPage({ params }: { params: Promise<{ 
                 <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Pertanyaan</p>
               </div>
             </div>
+
+            {/* Timer Settings */}
+            <div className="mt-8 pt-6 border-t border-slate-100">
+              <div className="flex items-center gap-2 mb-4">
+                 <div className="bg-slate-100 p-1.5 rounded-lg text-slate-500"><Timer className="w-4 h-4"/></div>
+                 <h4 className="text-sm font-bold text-slate-800">Pengaturan Waktu</h4>
+              </div>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                  <div className="space-y-0.5">
+                    <Label className="text-sm font-semibold text-slate-700">Gunakan Timer</Label>
+                    <p className="text-[11px] text-slate-500 leading-tight">Batas waktu per soal</p>
+                  </div>
+                  <Switch checked={hasTimer} onCheckedChange={setHasTimer} />
+                </div>
+                {hasTimer && (
+                  <div className="space-y-2 animate-in fade-in slide-in-from-top-2 p-3 bg-blue-50/50 border border-blue-100 rounded-xl">
+                    <Label className="text-xs font-semibold text-slate-700">Durasi (Detik)</Label>
+                    <Input type="number" min="1" value={timerSeconds} onChange={e => setTimerSeconds(parseInt(e.target.value) || '')} placeholder="Misal: 60" className="h-9 bg-white border-blue-200" />
+                  </div>
+                )}
+                <Button size="sm" onClick={handleSaveTimer} disabled={isSavingTimer} className="w-full mt-2 bg-slate-900 hover:bg-slate-800 rounded-xl h-10">
+                  {isSavingTimer ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Check className="w-4 h-4 mr-2" />} Simpan Pengaturan
+                </Button>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
@@ -212,6 +300,8 @@ export default function QuestionnaireDetailPage({ params }: { params: Promise<{ 
     } else {
         setSelectedDimension(null);
         setQuestions([]);
+        setEditingQuestionId(null);
+        setQuestionForm({ text: '', type: 'likert' });
     }
 }}>
     <DialogTrigger render={<Button variant="outline" className="rounded-xl border-slate-200 text-indigo-600 hover:bg-indigo-50 hover:text-indigo-700 font-semibold h-10" />}>
@@ -222,24 +312,33 @@ export default function QuestionnaireDetailPage({ params }: { params: Promise<{ 
             <DialogTitle>Kelola Soal: {dim.name}</DialogTitle>
         </DialogHeader>
         <div className="space-y-6 py-4">
-            <div className="bg-slate-50 p-4 rounded-xl space-y-3 border border-slate-200">
-                <h4 className="font-bold text-slate-800 text-sm">Tambah Soal Baru</h4>
+            <div className={`p-4 rounded-xl space-y-3 border ${editingQuestionId ? 'bg-amber-50 border-amber-200' : 'bg-slate-50 border-slate-200'}`}>
+                <div className="flex justify-between items-center">
+                    <h4 className="font-bold text-slate-800 text-sm">
+                        {editingQuestionId ? "Edit Soal" : "Tambah Soal Baru"}
+                    </h4>
+                    {editingQuestionId && (
+                        <Button variant="ghost" size="sm" onClick={handleCancelEdit} className="h-6 px-2 text-xs text-amber-700 hover:bg-amber-100">Batal Edit</Button>
+                    )}
+                </div>
                 <div className="space-y-2">
                     <Label>Pertanyaan</Label>
-                    <Input placeholder="Masukkan pertanyaan..." value={questionForm.text} onChange={e => setQuestionForm({...questionForm, text: e.target.value})} />
+                    <Input placeholder="Masukkan pertanyaan..." value={questionForm.text} onChange={e => setQuestionForm({...questionForm, text: e.target.value})} className="bg-white" />
                 </div>
                 <div className="space-y-2">
                     <Label>Tipe Jawaban</Label>
                     <Select value={questionForm.type} onValueChange={(val) => setQuestionForm({...questionForm, type: val as string})}>
-                        <SelectTrigger><SelectValue placeholder="Pilih tipe..." /></SelectTrigger>
+                        <SelectTrigger className="bg-white"><SelectValue placeholder="Pilih tipe..." /></SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="likert">Skala Likert (1-5)</SelectItem>
+                            <SelectItem value="likert">Skala Likert (1-7)</SelectItem>
                             <SelectItem value="multiple_choice">Pilihan Ganda</SelectItem>
                             <SelectItem value="text">Teks Bebas</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
-                <Button onClick={handleAddQuestion} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white">Simpan Soal</Button>
+                <Button onClick={handleSaveQuestion} className={`w-full text-white ${editingQuestionId ? 'bg-amber-500 hover:bg-amber-600' : 'bg-indigo-600 hover:bg-indigo-700'}`}>
+                    {editingQuestionId ? "Simpan Perubahan" : "Simpan Soal"}
+                </Button>
             </div>
             
             <div className="space-y-3">
@@ -251,11 +350,21 @@ export default function QuestionnaireDetailPage({ params }: { params: Promise<{ 
                 ) : (
                     <div className="space-y-2">
                         {questions.map((q, idx) => (
-                            <div key={q.id} className="p-3 border border-slate-200 rounded-lg flex gap-3 items-start">
-                                <span className="bg-indigo-100 text-indigo-700 font-bold w-6 h-6 rounded-full flex items-center justify-center text-xs shrink-0">{idx+1}</span>
-                                <div>
-                                    <p className="text-sm font-semibold text-slate-800">{q.text}</p>
-                                    <p className="text-xs text-slate-500 mt-1 uppercase tracking-wider">Tipe: {q.type === 'likert' ? 'Skala Likert' : q.type === 'multiple_choice' ? 'Pilihan Ganda' : 'Teks Bebas'}</p>
+                            <div key={q.id} className="p-3 border border-slate-200 rounded-lg flex justify-between gap-3 items-start group hover:border-slate-300 hover:shadow-sm transition-all bg-white">
+                                <div className="flex gap-3 items-start">
+                                    <span className="bg-indigo-100 text-indigo-700 font-bold w-6 h-6 rounded-full flex items-center justify-center text-xs shrink-0">{idx+1}</span>
+                                    <div>
+                                        <p className="text-sm font-semibold text-slate-800 leading-snug">{q.text}</p>
+                                        <p className="text-[10px] text-slate-500 mt-1.5 uppercase tracking-wider font-bold">Tipe: {q.type === 'likert' ? 'Skala Likert' : q.type === 'multiple_choice' ? 'Pilihan Ganda' : 'Teks Bebas'}</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-amber-500 hover:bg-amber-50" onClick={() => handleEditQuestionClick(q)}>
+                                        <Pencil className="w-4 h-4" />
+                                    </Button>
+                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-rose-500 hover:bg-rose-50" onClick={() => handleDeleteQuestion(q.id)}>
+                                        <Trash2 className="w-4 h-4" />
+                                    </Button>
                                 </div>
                             </div>
                         ))}

@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Play, ClipboardList, Zap, BarChart3, ShieldCheck, Download, QrCode } from "lucide-react";
+import HeroGraphic from "@/components/HeroGraphic";
+import TrialTestMenu from "@/components/TrialTestMenu";
 
 export default function Home() {
   return (
@@ -23,8 +25,7 @@ export default function Home() {
             <Link href="/kontak" className="text-slate-500 hover:text-slate-900 transition-colors">Kontak</Link>
           </nav>
           <div className="flex items-center gap-3">
-            <Button variant="ghost" className="hidden sm:inline-flex rounded-full px-5 text-slate-600 hover:text-slate-900 font-medium">Masuk</Button>
-            <Link href="/demo"><Button className="rounded-full px-6 bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20 font-medium transition-all">Coba Demo</Button></Link>
+            <TrialTestMenu />
           </div>
         </div>
       </header>
@@ -54,155 +55,7 @@ export default function Home() {
               </Button></Link>
             </div>
           </div>
-          <div className="relative h-[400px] md:h-[500px] w-full">
-            {/* Abstract Background Shape */}
-            <div className="absolute inset-0 right-[-10%] bg-[#f0f4ff] rounded-[3rem] -z-10 rotate-3"></div>
-            
-            {/* Dashboard Mockup - Futuristic Dark Mode */}
-            <div className="absolute right-0 top-4 w-[90%] h-[80%] bg-[#0B1121] rounded-2xl shadow-[0_0_50px_-12px_rgba(59,130,246,0.5)] border border-slate-800/80 flex flex-col overflow-hidden backdrop-blur-xl">
-                <div className="h-10 border-b border-slate-800/80 flex items-center px-4 justify-between bg-[#0F172A]/80">
-                    <div className="flex gap-1.5">
-                        <div className="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.6)]"></div>
-                        <div className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)]"></div>
-                        <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]"></div>
-                    </div>
-                    <div className="w-32 h-2 bg-slate-800 rounded-full overflow-hidden">
-                        <div className="w-1/3 h-full bg-blue-500/50 rounded-full animate-pulse"></div>
-                    </div>
-                </div>
-                <div className="flex-1 p-6 flex gap-6 relative">
-                    {/* Grid Background Effect */}
-                    <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:2rem_2rem] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)] opacity-20"></div>
-                    
-                    <div className="w-5/12 flex flex-col justify-center items-center gap-4 bg-slate-900/50 rounded-xl border border-slate-800/50 p-4 z-10 backdrop-blur-sm">
-                         {/* Donut Chart Futuristic */}
-                         <div className="relative w-32 h-32">
-                             <svg className="w-full h-full transform -rotate-90 drop-shadow-[0_0_10px_rgba(59,130,246,0.3)]" viewBox="0 0 100 100">
-                                 <circle cx="50" cy="50" r="40" fill="transparent" stroke="#1e293b" strokeWidth="12" />
-                                 <circle cx="50" cy="50" r="40" fill="transparent" stroke="#f43f5e" strokeWidth="12" strokeDasharray="251.2" strokeDashoffset="62.8" strokeLinecap="round" />
-                                 <circle cx="50" cy="50" r="40" fill="transparent" stroke="#f59e0b" strokeWidth="12" strokeDasharray="251.2" strokeDashoffset="125.6" strokeLinecap="round" />
-                                 <circle cx="50" cy="50" r="40" fill="transparent" stroke="#3b82f6" strokeWidth="12" strokeDasharray="251.2" strokeDashoffset="188.4" strokeLinecap="round" />
-                             </svg>
-                             <div className="absolute inset-0 flex items-center justify-center flex-col">
-                                 <span className="text-2xl font-extrabold text-white tracking-tight">68.7</span>
-                                 <span className="text-[10px] text-blue-400 font-semibold tracking-widest uppercase">Score</span>
-                             </div>
-                         </div>
-                    </div>
-                    <div className="w-7/12 bg-slate-900/50 rounded-xl border border-slate-800/50 flex items-center justify-center p-4 z-10 backdrop-blur-sm">
-                        {/* Radar Chart Futuristic */}
-                        <div className="relative w-full h-full flex items-center justify-center">
-                            <svg viewBox="0 0 100 100" className="w-full h-full overflow-visible">
-                                <defs>
-                                   <radialGradient id="radarGlow" cx="50%" cy="50%" r="50%">
-                                      <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.4" />
-                                      <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.1" />
-                                   </radialGradient>
-                                   <filter id="glow">
-                                      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                      <feMerge>
-                                         <feMergeNode in="coloredBlur"/>
-                                         <feMergeNode in="SourceGraphic"/>
-                                      </feMerge>
-                                   </filter>
-                                </defs>
-                                
-                                {/* Background Hexagons */}
-                                <polygon points="50,10 90,40 75,90 25,90 10,40" fill="transparent" stroke="#334155" strokeWidth="1" strokeDasharray="2 2" />
-                                <polygon points="50,25 75,45 65,75 35,75 25,45" fill="transparent" stroke="#334155" strokeWidth="1" strokeDasharray="2 2" />
-                                <polygon points="50,40 60,50 55,60 45,60 40,50" fill="transparent" stroke="#334155" strokeWidth="1" strokeDasharray="2 2" />
-                                
-                                {/* Axis Lines */}
-                                <line x1="50" y1="50" x2="50" y2="10" stroke="#334155" strokeWidth="1" />
-                                <line x1="50" y1="50" x2="90" y2="40" stroke="#334155" strokeWidth="1" />
-                                <line x1="50" y1="50" x2="75" y2="90" stroke="#334155" strokeWidth="1" />
-                                <line x1="50" y1="50" x2="25" y2="90" stroke="#334155" strokeWidth="1" />
-                                <line x1="50" y1="50" x2="10" y2="40" stroke="#334155" strokeWidth="1" />
-                                
-                                {/* Data Polygon */}
-                                <polygon points="50,30 80,45 60,80 30,75 15,50" fill="url(#radarGlow)" stroke="#60a5fa" strokeWidth="2" filter="url(#glow)" />
-                                
-                                {/* Nodes */}
-                                <circle cx="50" cy="30" r="2.5" fill="#fff" stroke="#3b82f6" strokeWidth="1.5" filter="url(#glow)" />
-                                <circle cx="80" cy="45" r="2.5" fill="#fff" stroke="#3b82f6" strokeWidth="1.5" filter="url(#glow)" />
-                                <circle cx="60" cy="80" r="2.5" fill="#fff" stroke="#3b82f6" strokeWidth="1.5" filter="url(#glow)" />
-                                <circle cx="30" cy="75" r="2.5" fill="#fff" stroke="#3b82f6" strokeWidth="1.5" filter="url(#glow)" />
-                                <circle cx="15" cy="50" r="2.5" fill="#fff" stroke="#3b82f6" strokeWidth="1.5" filter="url(#glow)" />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Mobile App Mockup - Futuristic */}
-            <div className="absolute right-4 bottom-[-5%] md:bottom-[-10%] w-[150px] md:w-[170px] h-[320px] bg-[#0F172A]/95 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-[6px] border-slate-800 flex flex-col items-center py-6 px-4 z-20">
-                <div className="w-12 h-1.5 bg-slate-800 rounded-full mb-4 absolute top-2.5"></div>
-                
-                <span className="text-[9px] font-extrabold text-slate-400 tracking-[0.2em] mb-8 mt-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400">STRESS INDEX</span>
-                
-                {/* Futuristic Gauge */}
-                <div className="relative w-28 h-28 mb-8">
-                    <svg className="w-full h-full overflow-visible" viewBox="0 0 100 50">
-                        <defs>
-                            <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" stopColor="#3b82f6" />
-                                <stop offset="50%" stopColor="#8b5cf6" />
-                                <stop offset="100%" stopColor="#f59e0b" />
-                            </linearGradient>
-                            <filter id="gaugeGlow">
-                                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-                                <feMerge>
-                                   <feMergeNode in="coloredBlur"/>
-                                   <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        <path d="M 10 50 A 40 40 0 0 1 90 50" fill="transparent" stroke="#1e293b" strokeWidth="8" strokeLinecap="round" />
-                        <path d="M 10 50 A 40 40 0 0 1 70 20" fill="transparent" stroke="url(#gaugeGrad)" strokeWidth="8" strokeLinecap="round" filter="url(#gaugeGlow)" />
-                    </svg>
-                    <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center justify-center">
-                        <div className="text-3xl font-extrabold text-white tracking-tight drop-shadow-md">68.7</div>
-                        <div className="text-[10px] font-bold text-amber-400 uppercase tracking-wider mt-1 drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]">Sedang</div>
-                    </div>
-                </div>
-                
-                <div className="w-full space-y-4">
-                    <div className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_5px_#3b82f6]"></div>
-                        <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden"><div className="w-[70%] h-full bg-blue-500 shadow-[0_0_10px_#3b82f6]"></div></div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-purple-500 shadow-[0_0_5px_#a855f7]"></div>
-                        <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden"><div className="w-[40%] h-full bg-purple-500 shadow-[0_0_10px_#a855f7]"></div></div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_5px_#10b981]"></div>
-                        <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden"><div className="w-[85%] h-full bg-emerald-500 shadow-[0_0_10px_#10b981]"></div></div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Float Stat Card Top */}
-            <div className="absolute left-[5%] top-[-5%] bg-white p-3 md:p-4 rounded-xl shadow-xl shadow-slate-200/50 border border-slate-100 z-10 hidden sm:block">
-                <div className="text-[10px] md:text-xs text-slate-500 font-medium mb-1">Rata-rata Stress</div>
-                <div className="flex items-end gap-3">
-                    <div>
-                        <span className="text-xl md:text-2xl font-bold text-slate-800">68.7</span>
-                        <div className="text-[10px] font-medium text-amber-500">Sedang</div>
-                    </div>
-                    <svg className="w-8 h-6 text-amber-500 mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
-                </div>
-            </div>
-
-            {/* Float Stat Card Bottom */}
-            <div className="absolute left-0 md:left-[-10%] bottom-8 bg-white p-3 md:p-4 rounded-xl shadow-xl shadow-slate-200/50 border border-slate-100 z-10">
-                <div className="text-[10px] md:text-xs text-slate-500 font-medium mb-1">Tingkat Partisipasi</div>
-                <div className="flex items-center gap-4">
-                    <span className="text-xl md:text-2xl font-bold text-slate-800">78.5%</span>
-                    <svg className="w-8 h-6 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
-                </div>
-            </div>
-          </div>
+          <HeroGraphic />
         </section>
 
         {/* FEATURES SECTION */}

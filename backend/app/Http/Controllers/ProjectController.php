@@ -26,6 +26,12 @@ class ProjectController extends Controller
         return response()->json($projects);
     }
 
+    public function getActive()
+    {
+        $projects = Project::where('status', 'active')->get(['id', 'title', 'description']);
+        return response()->json($projects);
+    }
+
     public function show($id)
     {
         $project = Project::withCount(['respondents', 'questionnaires'])->find($id);
