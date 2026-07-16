@@ -32,6 +32,7 @@ export default function QuestionnaireDetailPage({ params }: { params: Promise<{ 
   const [hasTimer, setHasTimer] = useState(false);
   const [timerSeconds, setTimerSeconds] = useState<number | ''>('');
   const [isSavingTimer, setIsSavingTimer] = useState(false);
+  const [allowAnonymous, setAllowAnonymous] = useState(true);
 
   const fetchDetail = () => {
     fetchApi(`/admin/questionnaires/${id}`)
@@ -42,7 +43,8 @@ export default function QuestionnaireDetailPage({ params }: { params: Promise<{ 
       .then(data => {
         setQuestionnaire(data);
         setHasTimer(data.has_timer || false);
-        setTimerSeconds(data.timer_seconds || '');
+        if(data.timer_seconds) setTimerSeconds(data.timer_seconds);
+        if(data.allow_anonymous !== undefined) setAllowAnonymous(data.allow_anonymous);
         setLoading(false);
       })
       .catch(err => {
@@ -52,7 +54,7 @@ export default function QuestionnaireDetailPage({ params }: { params: Promise<{ 
       });
   };
 
-  const handleSaveTimer = async () => {
+  const handleSaveSettings = async () => {
     setIsSavingTimer(true);
     try {
       const res = await fetchApi(`/admin/questionnaires/${id}`, {
@@ -60,13 +62,16 @@ export default function QuestionnaireDetailPage({ params }: { params: Promise<{ 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           has_timer: hasTimer,
-          timer_seconds: hasTimer ? (Number(timerSeconds) || null) : null
+          timer_seconds: hasTimer ? timerSeconds : null,
+          allow_anonymous: allowAnonymous
         })
       });
-      if (!res.ok) throw new Error("Gagal menyimpan pengaturan timer.");
-      toast.success("Pengaturan waktu berhasil disimpan.");
-    } catch (err: any) {
-      toast.error(err.message);
+      if(res.ok) {
+        toast.success("Pengaturan berhasil disimpan");
+        fetchDetail();
+      }
+    } catch(err) {
+      toast.error("Gagal menyimpan pengaturan");
     } finally {
       setIsSavingTimer(false);
     }
@@ -218,9 +223,16 @@ export default function QuestionnaireDetailPage({ params }: { params: Promise<{ 
             <div className="mt-8 pt-6 border-t border-slate-100">
               <div className="flex items-center gap-2 mb-4">
                  <div className="bg-slate-100 p-1.5 rounded-lg text-slate-500"><Timer className="w-4 h-4"/></div>
-                 <h4 className="text-sm font-bold text-slate-800">Pengaturan Waktu</h4>
+                 <h4 className="text-sm font-bold text-slate-800">Pengaturan Tambahan</h4>
               </div>
               <div className="space-y-4">
+                <div className="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                  <div className="space-y-0.5">
+                    <Label className="text-sm font-semibold text-slate-700">Izinkan Mode Anonim</Label>
+                    <p className="text-[11px] text-slate-500 leading-tight">Responden dapat menyembunyikan identitas</p>
+                  </div>
+                  <Switch checked={allowAnonymous} onCheckedChange={setAllowAnonymous} />
+                </div>
                 <div className="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
                   <div className="space-y-0.5">
                     <Label className="text-sm font-semibold text-slate-700">Gunakan Timer</Label>
@@ -234,7 +246,7 @@ export default function QuestionnaireDetailPage({ params }: { params: Promise<{ 
                     <Input type="number" min="1" value={timerSeconds} onChange={e => setTimerSeconds(parseInt(e.target.value) || '')} placeholder="Misal: 60" className="h-9 bg-white border-blue-200" />
                   </div>
                 )}
-                <Button size="sm" onClick={handleSaveTimer} disabled={isSavingTimer} className="w-full mt-2 bg-slate-900 hover:bg-slate-800 rounded-xl h-10">
+                <Button size="sm" onClick={handleSaveSettings} disabled={isSavingTimer} className="w-full mt-2 bg-slate-900 hover:bg-slate-800 rounded-xl h-10">
                   {isSavingTimer ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Check className="w-4 h-4 mr-2" />} Simpan Pengaturan
                 </Button>
               </div>

@@ -18,6 +18,7 @@ class QuestionnaireController extends Controller
                 'title' => $q->title,
                 'description' => $q->description,
                 'is_active' => $q->is_active,
+                'allow_anonymous' => $q->allow_anonymous,
                 'dimensions_count' => $q->dimensions->count(),
                 'questions_count' => $totalQuestions,
                 'dimensions' => $q->dimensions->map(function($dim) {
@@ -64,7 +65,8 @@ class QuestionnaireController extends Controller
             'description' => 'nullable|string',
             'is_active' => 'sometimes|boolean',
             'has_timer' => 'sometimes|boolean',
-            'timer_seconds' => 'nullable|integer|min:1'
+            'timer_seconds' => 'nullable|integer|min:1',
+            'allow_anonymous' => 'sometimes|boolean'
         ]);
 
         $questionnaire->update($validated);

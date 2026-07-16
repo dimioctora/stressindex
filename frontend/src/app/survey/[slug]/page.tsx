@@ -301,20 +301,22 @@ export default function SurveyPage() {
                 </p>
 
                 <form onSubmit={handleStartSurvey} className="space-y-6">
-                   <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                      <div className="flex flex-col gap-1 pr-4">
-                         <Label htmlFor="anonymous-mode" className="text-base font-bold flex items-center gap-2 text-slate-800">
-                           <ShieldCheck className="w-4 h-4 text-emerald-500" /> Mode Anonim
-                         </Label>
-                         <span className="text-xs text-slate-500 font-medium">Sembunyikan identitas saya dari hasil laporan.</span>
-                      </div>
-                      <Switch 
-                         id="anonymous-mode" 
-                         checked={isAnonymous} 
-                         onCheckedChange={setIsAnonymous}
-                         className="data-[state=checked]:bg-emerald-500"
-                      />
-                   </div>
+                   {questionnaire?.allow_anonymous !== false && (
+                     <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <div className="flex flex-col gap-1 pr-4">
+                           <Label htmlFor="anonymous-mode" className="text-base font-bold flex items-center gap-2 text-slate-800">
+                             <ShieldCheck className="w-4 h-4 text-emerald-500" /> Mode Anonim
+                           </Label>
+                           <span className="text-xs text-slate-500 font-medium">Sembunyikan identitas saya dari hasil laporan.</span>
+                        </div>
+                        <Switch 
+                           id="anonymous-mode" 
+                           checked={isAnonymous} 
+                           onCheckedChange={setIsAnonymous}
+                           className="data-[state=checked]:bg-emerald-500"
+                        />
+                     </div>
+                   )}
 
                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
                       <div className="space-y-2.5">
@@ -371,17 +373,7 @@ export default function SurveyPage() {
                       </div>
                    </div>
 
-                   <div className="space-y-2.5">
-                      <Label htmlFor="address" className="font-semibold text-slate-700">Alamat {isAnonymous ? "(Anonim)" : ""}</Label>
-                      <Input 
-                        id="address" 
-                        placeholder={isAnonymous ? "Rahasia" : "Jl. Jendral Sudirman..."} 
-                        disabled={isAnonymous}
-                        value={isAnonymous ? "" : formData.address}
-                        onChange={(e) => setFormData({...formData, address: e.target.value})}
-                        className="rounded-xl h-12 bg-slate-50/50"
-                      />
-                   </div>
+                   {/* Alamat Removed */}
 
                    <div className="flex flex-col gap-2.5">
                       <Label htmlFor="company" className="font-semibold text-slate-700">Nama Perusahaan</Label>
