@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, ArrowRight, CheckCircle2, ShieldCheck, User, Loader2, Download, Share2, Timer } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, ShieldCheck, User, Loader2, Download, Share2, Timer, Info } from "lucide-react";
 import { fetchApi } from "@/lib/api";
 import { toast } from "sonner";
 
