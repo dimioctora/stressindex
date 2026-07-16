@@ -11,9 +11,7 @@ export default function TentangPage() {
       <header className="fixed top-0 z-50 w-full border-b border-slate-200/50 bg-white/70 backdrop-blur-xl supports-[backdrop-filter]:bg-white/40">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-8">
           <div className="flex items-center gap-2.5">
-            <div className="bg-gradient-to-br from-blue-600 to-indigo-600 p-1.5 rounded-lg shadow-sm shadow-blue-500/20">
-               <BarChart3 className="h-5 w-5 text-white" strokeWidth={2.5} />
-            </div>
+            <img src="/images/roe-icon.png" alt="StressIndex Logo" className="h-8 w-8 object-contain" />
             <span className="text-xl font-extrabold tracking-tight text-slate-900 leading-none">STRESS<span className="text-blue-600">INDEX</span></span>
           </div>
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
@@ -99,7 +97,7 @@ export default function TentangPage() {
         {/* ROE INDONESIA SECTION */}
         <section className="py-24 container mx-auto px-4 md:px-8">
           <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
-            <Building2 className="w-12 h-12 text-indigo-600 mb-6" />
+            <img src="/images/roe-new-logo-utama.png" alt="ROE Indonesia Logo" className="h-24 md:h-28 object-contain mb-6" />
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">Bagian dari ROE Indonesia</h2>
             <p className="text-lg text-slate-600 leading-relaxed">
               Stress Index dengan bangga dikembangkan dan dikelola di bawah naungan <strong>ROE Indonesia</strong> (Rhythm Of Empowerment). Kami mengintegrasikan teknologi dan psikologi industri untuk menciptakan ekosistem kerja yang lebih baik.

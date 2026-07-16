@@ -50,9 +50,7 @@ export function AppSidebar() {
     <Sidebar className="border-r border-slate-200 bg-slate-50 shadow-sm shadow-slate-200/50">
       <SidebarHeader className="border-b border-slate-200 p-5">
          <div className="flex items-center gap-3 font-extrabold text-xl tracking-tight text-slate-900">
-           <div className="bg-gradient-to-br from-blue-600 to-indigo-600 p-2 rounded-xl shadow-md shadow-blue-500/20 flex-shrink-0">
-               <BarChart3 className="w-5 h-5 text-white" strokeWidth={2.5} />
-           </div>
+           <img src="/images/roe-icon.png" alt="StressIndex Logo" className="h-9 w-9 object-contain flex-shrink-0 rounded-xl shadow-md" />
            <span className="truncate">Stress<span className="text-blue-600">Index</span></span>
          </div>
       </SidebarHeader>

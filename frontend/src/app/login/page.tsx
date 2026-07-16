@@ -91,9 +91,7 @@ export default function LoginPage() {
           
           {/* Mobile branding */}
           <div className="flex lg:hidden items-center justify-center gap-3 mb-8">
-            <div className="bg-blue-600 p-2.5 rounded-xl shadow-lg shadow-blue-500/30">
-                <Shield className="w-6 h-6 text-white" />
-            </div>
+            <img src="/images/roe-icon.png" alt="StressIndex Logo" className="h-10 w-10 object-contain rounded-xl shadow-lg" />
             <span className="text-2xl font-extrabold text-slate-900 tracking-tight">Stress<span className="text-blue-600">Index</span></span>
           </div>
 

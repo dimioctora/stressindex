@@ -13,9 +13,7 @@ export default function Home() {
       <header className="fixed top-0 z-50 w-full border-b border-slate-200/50 bg-white/70 backdrop-blur-xl supports-[backdrop-filter]:bg-white/40">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-8">
           <div className="flex items-center gap-2.5">
-            <div className="bg-gradient-to-br from-blue-600 to-indigo-600 p-1.5 rounded-lg shadow-sm shadow-blue-500/20">
-               <BarChart3 className="h-5 w-5 text-white" strokeWidth={2.5} />
-            </div>
+            <img src="/images/roe-icon.png" alt="StressIndex Logo" className="h-8 w-8 object-contain" />
             <span className="text-xl font-extrabold tracking-tight text-slate-900 leading-none">STRESS<span className="text-blue-600">INDEX</span></span>
           </div>
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
@@ -32,15 +30,19 @@ export default function Home() {
       </header>
 
       <main className="flex-1 relative pt-16">
-        {/* Subtle Tech Grid Background */}
-        <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-50"></div>
-        
+        {/* Dynamic Premium Background */}
+        <div className="absolute inset-0 -z-10 h-full w-full bg-gradient-to-b from-blue-50/60 via-slate-50/30 to-white overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:24px_24px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-40"></div>
+          <div className="absolute top-0 right-0 -translate-y-12 translate-x-1/3 w-[800px] h-[600px] rounded-full bg-gradient-to-br from-indigo-400/20 to-purple-400/20 blur-[120px] pointer-events-none"></div>
+          <div className="absolute top-32 left-0 -translate-x-1/3 w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-blue-400/20 to-cyan-400/20 blur-[120px] pointer-events-none"></div>
+        </div>
+
         {/* HERO SECTION */}
         <section className="container mx-auto px-4 md:px-8 py-20 md:py-32 grid md:grid-cols-2 gap-14 items-center">
           <div className="flex flex-col gap-6 md:pr-8">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-semibold tracking-wide w-fit mb-2 shadow-sm">
-               <span className="flex h-2 w-2 rounded-full bg-blue-600 animate-pulse"></span>
-               PLATFORM PENILAIAN PSIKOLOGIS V2.0
+              <span className="flex h-2 w-2 rounded-full bg-blue-600 animate-pulse"></span>
+              PLATFORM PENILAIAN PSIKOLOGIS V2.0
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.1]">
               Ukur. Pahami.<br />
@@ -63,7 +65,7 @@ export default function Home() {
         <section className="container mx-auto px-4 py-24 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900">Fitur Unggulan</h2>
           <p className="text-slate-600 mb-16 text-lg max-w-2xl mx-auto">Semua yang Anda butuhkan untuk survei stres yang efektif dan bermakna.</p>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 text-left">
             {[
               { icon: ClipboardList, color: "text-purple-600", bg: "bg-purple-100", title: "Kuesioner Terstandar", desc: "Instrumen valid seperti SDS dengan skala 1-7 yang mudah digunakan." },
@@ -119,33 +121,33 @@ export default function Home() {
         {/* CTA SECTION */}
         <section className="container mx-auto px-4 pb-24">
           <div className="bg-[#f0f4ff] rounded-[2.5rem] p-8 md:p-14 flex flex-col md:flex-row items-center justify-between gap-10 relative overflow-hidden">
-            
+
             <div className="md:w-1/3 flex justify-center z-10 relative">
               {/* Illustration Placeholder (Vector-like CSS) */}
               <div className="w-56 h-56 relative flex items-end justify-center">
-                 {/* Plant leaves background */}
-                 <div className="absolute left-0 bottom-4 w-12 h-24 bg-[#cbd5e1] rounded-full origin-bottom rotate-[-20deg] opacity-60"></div>
-                 <div className="absolute left-6 bottom-4 w-10 h-20 bg-[#94a3b8] rounded-full origin-bottom rotate-[-45deg] opacity-60"></div>
-                 
-                 {/* Person */}
-                 <div className="w-32 h-40 bg-blue-600 rounded-t-3xl relative z-10 flex flex-col items-center pt-2">
-                     <div className="w-16 h-20 bg-[#fcd34d] rounded-2xl -mt-16 relative">
-                         {/* Hair */}
-                         <div className="absolute -top-2 -left-1 -right-1 h-8 bg-slate-900 rounded-t-2xl rounded-bl-xl"></div>
-                         {/* Face */}
-                         <div className="absolute top-8 right-3 w-1.5 h-1.5 rounded-full bg-slate-900"></div>
-                         <div className="absolute top-8 right-8 w-1.5 h-1.5 rounded-full bg-slate-900"></div>
-                         <div className="absolute top-12 right-4 w-4 h-1.5 rounded-full bg-amber-600/50"></div>
-                     </div>
-                 </div>
-                 
-                 {/* Laptop */}
-                 <div className="absolute bottom-0 right-0 w-32 h-20 bg-slate-800 rounded-t-xl rounded-bl-xl z-20 flex items-center justify-center">
-                     <div className="w-3 h-3 rounded-full bg-white/20"></div>
-                 </div>
+                {/* Plant leaves background */}
+                <div className="absolute left-0 bottom-4 w-12 h-24 bg-[#cbd5e1] rounded-full origin-bottom rotate-[-20deg] opacity-60"></div>
+                <div className="absolute left-6 bottom-4 w-10 h-20 bg-[#94a3b8] rounded-full origin-bottom rotate-[-45deg] opacity-60"></div>
+
+                {/* Person */}
+                <div className="w-32 h-40 bg-blue-600 rounded-t-3xl relative z-10 flex flex-col items-center pt-2">
+                  <div className="w-16 h-20 bg-[#fcd34d] rounded-2xl -mt-16 relative">
+                    {/* Hair */}
+                    <div className="absolute -top-2 -left-1 -right-1 h-8 bg-slate-900 rounded-t-2xl rounded-bl-xl"></div>
+                    {/* Face */}
+                    <div className="absolute top-8 right-3 w-1.5 h-1.5 rounded-full bg-slate-900"></div>
+                    <div className="absolute top-8 right-8 w-1.5 h-1.5 rounded-full bg-slate-900"></div>
+                    <div className="absolute top-12 right-4 w-4 h-1.5 rounded-full bg-amber-600/50"></div>
+                  </div>
+                </div>
+
+                {/* Laptop */}
+                <div className="absolute bottom-0 right-0 w-32 h-20 bg-slate-800 rounded-t-xl rounded-bl-xl z-20 flex items-center justify-center">
+                  <div className="w-3 h-3 rounded-full bg-white/20"></div>
+                </div>
               </div>
             </div>
-            
+
             <div className="md:w-1/3 z-10 text-center md:text-left">
               <h2 className="text-2xl md:text-3xl font-bold mb-4 text-slate-900 leading-tight">Siap memahami tingkat stres di organisasi Anda?</h2>
               <p className="text-slate-600 mb-8 text-sm md:text-base">
@@ -153,12 +155,12 @@ export default function Home() {
               </p>
               <Button size="lg" className="rounded-full px-8 bg-blue-600 hover:bg-blue-700">Mulai Sekarang</Button>
             </div>
-            
+
             <div className="md:w-1/3 flex justify-center md:justify-end z-10">
-               <div className="bg-white p-4 rounded-2xl flex items-center gap-5 shadow-lg border border-slate-100">
-                  <QrCode className="w-20 h-20 text-slate-800" strokeWidth={1.5} />
-                  <span className="text-xs font-semibold text-slate-600 max-w-[100px] leading-relaxed">Scan QR Code untuk mencoba demo survei</span>
-               </div>
+              <div className="bg-white p-4 rounded-2xl flex items-center gap-5 shadow-lg border border-slate-100">
+                <QrCode className="w-20 h-20 text-slate-800" strokeWidth={1.5} />
+                <span className="text-xs font-semibold text-slate-600 max-w-[100px] leading-relaxed">Scan QR Code untuk mencoba demo survei</span>
+              </div>
             </div>
           </div>
         </section>
@@ -178,7 +180,7 @@ export default function Home() {
             <Link href="#" className="hover:text-white transition-colors">Bantuan</Link>
           </div>
           <div className="text-sm">
-            © 2026 Stress Index. All rights reserved.
+            © 2026 ROE Indonesia. All rights reserved.
           </div>
         </div>
       </footer>
