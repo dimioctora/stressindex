@@ -635,7 +635,7 @@ export default function SurveyPage() {
          <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
          <span className="text-left">
            Data anda telah dilindungi oleh standar privasi enterprise<br/>
-           ROEIndonesia copyright c2026
+           copyright &copy;2026 ROE.Indonesia
          </span>
       </footer>
     </div>
