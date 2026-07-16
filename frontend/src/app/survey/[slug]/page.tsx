@@ -111,13 +111,38 @@ export default function SurveyPage() {
           text: `Ini adalah hasil survei saya untuk ${project?.title}`,
           files: [file]
         });
+      } else if (blob && navigator.clipboard) {
+        // Fallback: Copy to clipboard
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            'image/png': blob
+          })
+        ]);
+        toast.success("Berhasil! Gambar telah disalin. Silakan Paste (Ctrl+V) di WhatsApp atau media sosial Anda.");
       } else {
-        toast.info("Browser Anda tidak mendukung Web Share API dengan gambar. Silakan unduh gambarnya saja.");
+        toast.info("Perangkat Anda tidak mendukung fitur bagikan. Mengunduh otomatis...");
+        handleDownload();
       }
     } catch (err: any) {
       console.error("Share error:", err);
       if (err.name === 'AbortError') return; // User canceled the share dialog
-      toast.info("Gagal membagikan (mungkin diblokir browser). Mengunduh gambar otomatis...");
+      
+      try {
+         // Try clipboard as secondary fallback if share threw an error
+         if (resultRef.current && navigator.clipboard) {
+            const canvas = await html2canvas(resultRef.current, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
+            const blob = await new Promise<Blob | null>(resolve => canvas.toBlob(resolve, 'image/png'));
+            if (blob) {
+                await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+                toast.success("Berhasil! Gambar telah disalin. Silakan Paste (Ctrl+V) di WhatsApp atau sosmed Anda.");
+                return;
+            }
+         }
+      } catch (e) {
+         console.error("Clipboard fallback error:", e);
+      }
+
+      toast.info("Gagal membagikan. Mengunduh gambar otomatis...");
       handleDownload();
     } finally {
       setIsExporting(false);
