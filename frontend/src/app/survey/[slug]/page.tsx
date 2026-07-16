@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, ArrowRight, CheckCircle2, ShieldCheck, User, Loader2, Download, Share2, Timer, Info } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, ShieldCheck, User, Loader2, Download, Share2, Timer, Info, ChevronDown } from "lucide-react";
 import { fetchApi } from "@/lib/api";
 import { toast } from "sonner";
 
@@ -621,12 +621,30 @@ export default function SurveyPage() {
                     <span>Skor per Aspek</span>
                  </h3>
                  <div className="space-y-3">
-                    {resultData.dimensionScores && Object.entries(resultData.dimensionScores).map(([dim, score]: [string, any]) => (
-                       <div key={dim} className="flex items-center justify-between">
-                          <span className="text-sm font-semibold text-slate-600">{dim}</span>
-                          <span className="text-sm font-extrabold text-blue-600 bg-blue-100 px-2 py-0.5 rounded-md">{score}</span>
-                       </div>
-                    ))}
+                    {resultData.dimensionScores && Object.entries(resultData.dimensionScores).map(([dim, score]: [string, any]) => {
+                       const aspectDescriptions: Record<string, string> = {
+                         "Ketaksaan Peran": "Ketidakjelasan mengenai tugas, tanggung jawab, dan ekspektasi pekerjaan.",
+                         "Konflik Peran": "Tuntutan pekerjaan yang saling bertentangan atau tidak sejalan dengan nilai pribadi.",
+                         "Beban Berlebih Kuantitatif": "Jumlah pekerjaan yang terlalu banyak dan tenggat waktu yang sempit.",
+                         "Beban Berlebih Kualitatif": "Tingkat kesulitan atau tuntutan pekerjaan yang melebihi kemampuan yang dimiliki.",
+                         "Pengembangan Karir": "Ketidakpastian mengenai masa depan promosi, keamanan kerja, atau peluang karir.",
+                         "Tanggung jawab terhadap orang lain": "Tekanan akibat beban tanggung jawab terhadap kinerja dan kesejahteraan rekan kerja."
+                       };
+                       return (
+                        <details key={dim} className="group cursor-pointer rounded-xl bg-white border border-slate-200 p-3.5 shadow-sm transition-all hover:border-slate-300">
+                           <summary className="flex items-center justify-between list-none font-semibold text-slate-700 text-sm focus:outline-none">
+                             <div className="flex items-center gap-2.5">
+                               <ChevronDown className="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:-rotate-180" />
+                               {dim}
+                             </div>
+                             <span className="text-sm font-extrabold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-100">{score}</span>
+                           </summary>
+                           <div className="mt-3 text-xs text-slate-500 font-medium pl-6 leading-relaxed border-t border-slate-100 pt-3">
+                             {aspectDescriptions[dim] || "Aspek yang mempengaruhi tingkat stres di lingkungan kerja."}
+                           </div>
+                        </details>
+                       );
+                    })}
                  </div>
               </div>
               
