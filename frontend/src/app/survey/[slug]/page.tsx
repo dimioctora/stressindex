@@ -26,7 +26,7 @@ export default function SurveyPage() {
   const [questionnaire, setQuestionnaire] = useState<any>(null);
   const [questions, setQuestions] = useState<any[]>([]);
   
-  const [step, setStep] = useState<"register" | "survey" | "result">("register");
+  const [step, setStep] = useState<"register" | "intro" | "survey" | "result">("register");
   
   // Register State
   const [isAnonymous, setIsAnonymous] = useState(false);
@@ -270,6 +270,10 @@ export default function SurveyPage() {
 
   const handleStartSurvey = (e: React.FormEvent) => {
      e.preventDefault();
+     setStep("intro");
+  };
+
+  const handleStartRealSurvey = () => {
      setStep("survey");
   };
 
@@ -281,7 +285,7 @@ export default function SurveyPage() {
             <span className="hidden sm:inline">{project.title.length > 30 ? project.title.substring(0, 30) + '...' : project.title}</span>
          </div>
          <div className="flex items-center gap-4 text-sm text-slate-500 font-semibold">
-             {step === "register" ? "Langkah 1: Data Diri" : step === "survey" ? "Langkah 2: Kuesioner" : "Selesai"}
+             {step === "register" ? "Langkah 1: Data Diri" : step === "intro" ? "Langkah 2: Informasi" : step === "survey" ? "Langkah 3: Kuesioner" : "Selesai"}
          </div>
          <Link href="/">
            <Button variant="ghost" size="sm" className="text-slate-500 rounded-full font-medium">Batal</Button>
@@ -297,7 +301,7 @@ export default function SurveyPage() {
                 </div>
                 <h1 className="text-3xl font-extrabold text-slate-900 mb-2 tracking-tight">Registrasi Responden</h1>
                 <p className="text-slate-500 mb-8 leading-relaxed font-medium">
-                  {questionnaire.description || "Silakan isi data diri Anda. Anda dapat memilih mode anonim untuk menjaga privasi."}
+                  Silakan lengkapi data diri Anda di bawah ini sebelum melanjutkan.
                 </p>
 
                 <form onSubmit={handleStartSurvey} className="space-y-6">
@@ -443,14 +447,32 @@ export default function SurveyPage() {
                     </div>
 
                    <Button type="submit" size="lg" className="w-full rounded-full h-14 text-base font-bold bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-500/20">
-                      Mulai Kuesioner Sekarang <ArrowRight className="w-5 h-5 ml-2" />
+                      Lanjutkan <ArrowRight className="w-5 h-5 ml-2" />
                    </Button>
                 </form>
              </div>
            </div>
         )}
 
-        {step === "survey" && (
+        {step === "intro" && (
+           <div className="w-full max-w-2xl">
+              <div className="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100 p-8 md:p-12 text-center">
+                 <div className="w-20 h-20 bg-blue-50 rounded-[2rem] flex items-center justify-center mb-8 mx-auto border border-blue-100 shadow-sm">
+                    <Info className="w-10 h-10 text-blue-600" />
+                 </div>
+                 <h2 className="text-3xl font-extrabold text-slate-900 mb-4 tracking-tight">{questionnaire.title}</h2>
+                 <div className="text-slate-600 mb-10 leading-relaxed text-lg whitespace-pre-wrap">
+                   {questionnaire.description || "Tidak ada deskripsi untuk kuesioner ini."}
+                 </div>
+                 
+                 <Button onClick={handleStartRealSurvey} className="w-full sm:w-auto px-8 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl h-14 text-lg font-bold shadow-lg shadow-blue-500/30 transition-all hover:scale-105 active:scale-95">
+                    Mulai Kuesioner Sekarang <ArrowRight className="w-5 h-5 ml-2" />
+                 </Button>
+              </div>
+           </div>
+        )}
+
+        {step === "survey" && currentQuestion && (
            <div className="w-full max-w-2xl">
              <div className="mb-10">
                <div className="flex justify-between items-end mb-3">
