@@ -48,6 +48,6 @@ Route::prefix('public')->group(function () {
     Route::get('/projects', [ProjectController::class, 'getActive']);
     Route::get('/questionnaires', [QuestionnaireController::class, 'getActive']);
     Route::get('/questionnaires/{id}', [QuestionnaireController::class, 'showPublic']);
-    Route::get('/surveys/{projectId}', [SurveyController::class, 'show']);
-    Route::post('/surveys/{projectId}/submit', [SurveyController::class, 'submit']);
+    Route::get('/surveys/{projectIdOrSlug}', [SurveyController::class, 'show']);
+    Route::post('/surveys/{projectIdOrSlug}/submit', [SurveyController::class, 'submit']);
 });

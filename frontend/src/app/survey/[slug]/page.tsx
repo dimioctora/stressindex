@@ -30,7 +30,7 @@ const highlightDistinguishingWords = (text: string) => {
 
 export default function SurveyPage() {
   const params = useParams();
-  const projectId = params.projectId as string;
+  const slug = params.slug as string;
   
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -133,9 +133,9 @@ export default function SurveyPage() {
   };
 
   useEffect(() => {
-    if (!projectId) return;
+    if (!slug) return;
     
-    fetchApi(`/public/surveys/${projectId}`)
+    fetchApi(`/public/surveys/${slug}`)
       .then(async (res) => {
          if (!res.ok) {
             const data = await res.json();
@@ -153,7 +153,7 @@ export default function SurveyPage() {
         setError(err.message);
         setLoading(false);
       });
-  }, [projectId]);
+  }, [slug]);
 
   if (loading) {
      return <div className="min-h-screen flex items-center justify-center bg-slate-50"><Loader2 className="w-10 h-10 animate-spin text-blue-600" /></div>;
@@ -192,7 +192,7 @@ export default function SurveyPage() {
     } else {
       setIsSubmitting(true);
       try {
-         const res = await fetchApi(`/public/surveys/${projectId}/submit`, {
+         const res = await fetchApi(`/public/surveys/${slug}/submit`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

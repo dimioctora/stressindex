@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 
 class SurveyController extends Controller
 {
-    public function show($projectId)
+    public function show($projectIdOrSlug)
     {
         $project = Project::with([
             'questionnaires' => function ($q) {
@@ -19,7 +19,9 @@ class SurveyController extends Controller
                     $q2->orderBy('order', 'asc');
                 }]);
             }
-        ])->find($projectId);
+        ])->where(function($query) use ($projectIdOrSlug) {
+            $query->where('id', $projectIdOrSlug)->orWhere('slug', $projectIdOrSlug);
+        })->first();
 
         if (!$project) {
             return response()->json(['message' => 'Proyek tidak ditemukan'], 404);
@@ -67,10 +69,9 @@ class SurveyController extends Controller
         ]);
     }
 
-    public function submit(Request $request, $projectId)
+    public function submit(Request $request, $projectIdOrSlug)
     {
-        $project = Project::find($projectId);
-        
+        $project = Project::where('id', $projectIdOrSlug)->orWhere('slug', $projectIdOrSlug)->first();
         if (!$project || $project->status !== 'active') {
             return response()->json(['message' => 'Survei tidak valid atau tidak aktif'], 400);
         }

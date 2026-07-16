@@ -7,7 +7,8 @@ import { ChevronDown, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface Project {
-  id: number;
+  id: string;
+  slug: string;
   title: string;
   description: string;
 }
@@ -82,7 +83,7 @@ export default function TrialTestMenu() {
               {projects.map((p) => (
                 <Link 
                   key={p.id} 
-                  href={`/survey/${p.id}`} 
+                  href={`/survey/${p.slug}`} 
                   className="px-3 py-2.5 rounded-lg hover:bg-blue-50 transition-colors text-sm text-slate-700 font-medium block"
                 >
                   <div className="line-clamp-1">{p.title}</div>
