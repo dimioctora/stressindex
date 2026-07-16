@@ -56,7 +56,7 @@ export default function QuestionnairesPage() {
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 mb-1">Kuesioner & Dimensi</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 mb-1">Kuesioner & Aspek</h1>
           <p className="text-slate-500 font-medium">Susun daftar pertanyaan dan struktur dimensi untuk setiap survei.</p>
         </div>
         <div className="flex gap-3">
@@ -123,7 +123,7 @@ export default function QuestionnairesPage() {
                         <div className="flex flex-col items-start gap-1 p-3 rounded-2xl bg-indigo-50/50 border border-indigo-100/50">
                            <Layers className="w-5 h-5 text-indigo-500 mb-1" />
                            <p className="font-extrabold text-2xl text-slate-800">{q.dimensions_count}</p>
-                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Dimensi</p>
+                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Aspek</p>
                         </div>
                         <div className="flex flex-col items-start gap-1 p-3 rounded-2xl bg-purple-50/50 border border-purple-100/50">
                            <LayoutList className="w-5 h-5 text-purple-500 mb-1" />
@@ -133,7 +133,7 @@ export default function QuestionnairesPage() {
                      </div>
                      
                      <div>
-                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Struktur Dimensi</p>
+                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Struktur Aspek</p>
                         <div className="space-y-2">
                             {q.dimensions.slice(0, 3).map((dim: any, idx: number) => (
                                 <div key={idx} className="flex items-center justify-between bg-slate-50 py-2 px-3 rounded-xl border border-slate-100">

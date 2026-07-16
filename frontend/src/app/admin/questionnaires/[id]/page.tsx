@@ -210,7 +210,7 @@ export default function QuestionnaireDetailPage({ params }: { params: Promise<{ 
               <div className="flex flex-col items-center justify-center p-4 rounded-2xl bg-indigo-50/50 border border-indigo-100/50">
                 <Layers className="w-6 h-6 text-indigo-500 mb-2" />
                 <p className="font-extrabold text-3xl text-slate-800">{questionnaire.dimensions?.length || 0}</p>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Dimensi</p>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Aspek</p>
               </div>
               <div className="flex flex-col items-center justify-center p-4 rounded-2xl bg-purple-50/50 border border-purple-100/50">
                 <FileQuestion className="w-6 h-6 text-purple-500 mb-2" />
@@ -257,24 +257,24 @@ export default function QuestionnaireDetailPage({ params }: { params: Promise<{ 
         {/* Dimensions List */}
         <div className="md:col-span-2 space-y-6">
           <div className="flex justify-between items-center">
-            <h2 className="text-xl font-bold text-slate-800">Daftar Dimensi</h2>
-            <Button onClick={() => setIsAddingDimension(true)} className="bg-indigo-600 hover:bg-indigo-700 rounded-xl h-10 px-4 text-white font-semibold shadow-md shadow-indigo-500/20"><Plus className="w-4 h-4 mr-2"/> Tambah Dimensi</Button>
+            <h2 className="text-xl font-bold text-slate-800">Daftar Aspek</h2>
+            <Button onClick={() => setIsAddingDimension(true)} className="bg-indigo-600 hover:bg-indigo-700 rounded-xl h-10 px-4 text-white font-semibold shadow-md shadow-indigo-500/20"><Plus className="w-4 h-4 mr-2"/> Tambah Aspek</Button>
           </div>
 
           {isAddingDimension && (
              <Card className="border-2 border-indigo-200 shadow-xl shadow-indigo-100/50 rounded-2xl bg-white overflow-hidden">
                 <CardHeader className="bg-indigo-50/50 border-b border-indigo-100 p-5 flex flex-row items-center justify-between">
-                   <CardTitle className="text-lg font-bold text-indigo-900">Dimensi Baru</CardTitle>
+                   <CardTitle className="text-lg font-bold text-indigo-900">Aspek Baru</CardTitle>
                    <Button variant="ghost" size="icon" className="text-slate-400 hover:text-slate-600 h-8 w-8" onClick={() => setIsAddingDimension(false)}><X className="w-4 h-4"/></Button>
                 </CardHeader>
                 <CardContent className="p-5 space-y-4">
                    <div>
-                      <label className="text-sm font-semibold text-slate-700 mb-1 block">Nama Dimensi</label>
+                      <label className="text-sm font-semibold text-slate-700 mb-1 block">Nama Aspek</label>
                       <Input value={dimensionForm.name} onChange={e => setDimensionForm({...dimensionForm, name: e.target.value})} placeholder="Misal: Beban Kerja" className="border-slate-200 focus-visible:ring-indigo-500" />
                    </div>
                    <div>
                       <label className="text-sm font-semibold text-slate-700 mb-1 block">Deskripsi Singkat (Opsional)</label>
-                      <Input value={dimensionForm.description} onChange={e => setDimensionForm({...dimensionForm, description: e.target.value})} placeholder="Penjelasan tentang dimensi ini..." className="border-slate-200 focus-visible:ring-indigo-500" />
+                      <Input value={dimensionForm.description} onChange={e => setDimensionForm({...dimensionForm, description: e.target.value})} placeholder="Penjelasan tentang aspek ini..." className="border-slate-200 focus-visible:ring-indigo-500" />
                    </div>
                 </CardContent>
                 <CardFooter className="p-5 pt-0 bg-white flex justify-end gap-3 border-t border-slate-50 mt-4">
@@ -287,7 +287,7 @@ export default function QuestionnaireDetailPage({ params }: { params: Promise<{ 
           {questionnaire.dimensions?.length === 0 && !isAddingDimension ? (
             <div className="py-12 text-center border-2 border-dashed border-slate-200 rounded-3xl bg-slate-50/50">
                <Layers className="w-10 h-10 text-slate-300 mx-auto mb-4" />
-               <h3 className="text-lg font-bold text-slate-800 mb-1">Belum Ada Dimensi</h3>
+               <h3 className="text-lg font-bold text-slate-800 mb-1">Belum Ada Aspek</h3>
                <p className="text-slate-500 text-sm max-w-sm mx-auto">Tambahkan dimensi pertama untuk mulai mengelompokkan pertanyaan survei Anda.</p>
             </div>
           ) : (

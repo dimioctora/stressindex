@@ -580,7 +580,7 @@ export default function SurveyPage() {
               
               <div className="mb-6 bg-slate-50 rounded-2xl p-6 border border-slate-100 text-left">
                  <h3 className="font-bold text-slate-800 mb-4 flex items-center justify-between">
-                    <span>Skor per Dimensi</span>
+                    <span>Skor per Aspek</span>
                  </h3>
                  <div className="space-y-3">
                     {resultData.dimensionScores && Object.entries(resultData.dimensionScores).map(([dim, score]: [string, any]) => (

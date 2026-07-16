@@ -143,7 +143,7 @@ export default function ProjectResultsPage({ params }: { params: Promise<{ id: s
          {/* Dimension Chart */}
          <Card className="border border-slate-200/60 shadow-xl shadow-slate-200/40 rounded-3xl bg-white p-3">
             <CardHeader>
-               <CardTitle className="text-xl font-extrabold text-slate-800">Dimensi Stres Tertinggi</CardTitle>
+               <CardTitle className="text-xl font-extrabold text-slate-800">Aspek Stres Tertinggi</CardTitle>
                <CardDescription className="text-slate-500 font-medium">Faktor utama penyebab stres dalam proyek ini.</CardDescription>
             </CardHeader>
             <CardContent className="h-[350px]">

@@ -76,7 +76,7 @@ export function AppSidebar() {
               <SidebarMenuItem>
                 <SidebarMenuButton isActive={pathname.startsWith('/admin/questionnaires')} render={<Link href="/admin/questionnaires" />} className={`rounded-xl py-5 transition-all font-medium group ${pathname.startsWith('/admin/questionnaires') ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-500/20 hover:bg-blue-700 hover:text-white' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'}`}>
                   <FileQuestion className="w-5 h-5" />
-                  <span>Kuesioner & Dimensi</span>
+                  <span>Kuesioner & Aspek</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
