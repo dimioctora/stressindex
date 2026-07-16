@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import html2canvas from "html2canvas";
+import { toPng, toBlob } from "html-to-image";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
@@ -82,8 +82,8 @@ export default function SurveyPage() {
     if (!resultRef.current) return;
     setIsExporting(true);
     try {
-      const canvas = await html2canvas(resultRef.current, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
-      const image = canvas.toDataURL("image/png");
+      await new Promise(resolve => setTimeout(resolve, 150)); // Allow render to settle
+      const image = await toPng(resultRef.current, { cacheBust: true, backgroundColor: "#ffffff", pixelRatio: 2 });
       const link = document.createElement("a");
       link.href = image;
       link.download = `Hasil_Survei_${project?.title?.replace(/\s+/g, '_') || 'StressIndex'}.png`;
@@ -91,7 +91,7 @@ export default function SurveyPage() {
       link.click();
       document.body.removeChild(link);
     } catch (err) {
-      console.error("html2canvas error:", err);
+      console.error("Export error:", err);
       toast.error("Gagal mengunduh gambar");
     } finally {
       setIsExporting(false);
@@ -102,8 +102,8 @@ export default function SurveyPage() {
     if (!resultRef.current) return;
     setIsExporting(true);
     try {
-      const canvas = await html2canvas(resultRef.current, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
-      const blob = await new Promise<Blob | null>(resolve => canvas.toBlob(resolve, 'image/png'));
+      await new Promise(resolve => setTimeout(resolve, 150));
+      const blob = await toBlob(resultRef.current, { cacheBust: true, backgroundColor: "#ffffff", pixelRatio: 2 });
       if (blob && navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], 'hasil.png', { type: 'image/png' })] })) {
         const file = new File([blob], 'hasil_survei.png', { type: 'image/png' });
         await navigator.share({
@@ -118,7 +118,7 @@ export default function SurveyPage() {
             'image/png': blob
           })
         ]);
-        toast.success("Berhasil! Gambar telah disalin. Silakan Paste (Ctrl+V) di WhatsApp atau media sosial Anda.");
+        toast.success("Berhasil! Gambar disalin ke clipboard. Silakan Paste (Ctrl+V) di WhatsApp atau media sosial Anda.");
       } else {
         toast.info("Perangkat Anda tidak mendukung fitur bagikan. Mengunduh otomatis...");
         handleDownload();
@@ -130,11 +130,10 @@ export default function SurveyPage() {
       try {
          // Try clipboard as secondary fallback if share threw an error
          if (resultRef.current && navigator.clipboard) {
-            const canvas = await html2canvas(resultRef.current, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
-            const blob = await new Promise<Blob | null>(resolve => canvas.toBlob(resolve, 'image/png'));
+            const blob = await toBlob(resultRef.current, { cacheBust: true, backgroundColor: "#ffffff", pixelRatio: 2 });
             if (blob) {
                 await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-                toast.success("Berhasil! Gambar telah disalin. Silakan Paste (Ctrl+V) di WhatsApp atau sosmed Anda.");
+                toast.success("Berhasil! Gambar disalin ke clipboard. Silakan Paste (Ctrl+V) di WhatsApp atau sosmed Anda.");
                 return;
             }
          }
