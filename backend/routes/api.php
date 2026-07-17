@@ -21,6 +21,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index']);
     Route::get('/respondents', [RespondentController::class, 'index']);
+    Route::delete('/respondents/{id}', [RespondentController::class, 'destroy']);
     Route::get('/projects', [ProjectController::class, 'index']);
     Route::get('/projects/{id}', [ProjectController::class, 'show']);
     Route::put('/projects/{id}', [ProjectController::class, 'update']);

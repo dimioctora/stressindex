@@ -3,12 +3,14 @@
 import { use, useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Download, Plus, Loader2, Search, Filter, ArrowLeft } from "lucide-react"
+import { Download, Plus, Loader2, Search, Filter, ArrowLeft, Trash2 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { fetchApi } from "@/lib/api";
+import { toast } from "sonner";
 
 export default function ProjectRespondentsPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
@@ -16,8 +18,11 @@ export default function ProjectRespondentsPage({ params }: { params: Promise<{ i
 
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedUser, setSelectedUser] = useState<any>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  useEffect(() => {
+  const fetchRespondents = () => {
+    setLoading(true);
     fetchApi(`/admin/projects/${id}/respondents`)
       .then(res => res.json())
       .then(data => {
@@ -28,6 +33,35 @@ export default function ProjectRespondentsPage({ params }: { params: Promise<{ i
         console.error(err);
         setLoading(false);
       });
+  };
+
+  const handleDelete = async (userId: string) => {
+    if (!confirm("Apakah Anda yakin ingin menghapus data responden ini? Tindakan ini tidak dapat dibatalkan.")) return;
+    
+    setIsDeleting(true);
+    try {
+      const res = await fetchApi(`/admin/respondents/${userId}`, {
+        method: 'DELETE'
+      });
+      
+      if (res.ok) {
+        toast.success("Data responden berhasil dihapus");
+        setSelectedUser(null);
+        fetchRespondents();
+      } else {
+        const errData = await res.json().catch(() => null);
+        toast.error(errData?.message || "Gagal menghapus data responden");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Terjadi kesalahan saat menghapus data");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchRespondents();
   }, [id]);
 
   return (
@@ -77,7 +111,6 @@ export default function ProjectRespondentsPage({ params }: { params: Promise<{ i
                       <TableHead className="py-5 px-6 font-bold text-slate-600 uppercase tracking-wider text-xs h-auto">Departemen</TableHead>
                       <TableHead className="py-5 px-6 font-bold text-slate-600 uppercase tracking-wider text-xs h-auto">Jabatan</TableHead>
                       <TableHead className="py-5 px-6 font-bold text-slate-600 uppercase tracking-wider text-xs h-auto">Status Survei</TableHead>
-                      <TableHead className="py-5 px-6 font-bold text-slate-600 uppercase tracking-wider text-xs text-right h-auto">Skor Stres</TableHead>
                    </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -86,21 +119,18 @@ export default function ProjectRespondentsPage({ params }: { params: Promise<{ i
                         <TableCell colSpan={5} className="text-center py-10 text-slate-500">Tidak ada data responden.</TableCell>
                       </TableRow>
                    ) : users.map((user: any) => (
-                      <TableRow key={user.id} className="border-slate-100/60 hover:bg-slate-50/80 transition-colors group">
-                         <TableCell className="px-6 py-5 font-bold text-slate-800 text-base">{user.name}</TableCell>
+                      <TableRow 
+                        key={user.id} 
+                        onClick={() => setSelectedUser(user)}
+                        className="cursor-pointer border-slate-100/60 hover:bg-slate-50/80 transition-colors group"
+                      >
+                         <TableCell className="px-6 py-5 font-bold text-slate-800 text-base group-hover:text-blue-600 transition-colors">{user.name}</TableCell>
                          <TableCell className="px-6 py-5 text-slate-600 font-medium">{user.department}</TableCell>
                          <TableCell className="px-6 py-5 text-slate-600 font-medium">{user.role}</TableCell>
                          <TableCell className="px-6 py-5">
-                            {user.status === 'Selesai' && <Badge className="bg-emerald-50 text-emerald-600 hover:bg-emerald-100 border border-emerald-200/60 rounded-lg px-3 py-1.5 font-bold shadow-sm shadow-emerald-100">Selesai</Badge>}
+                            {user.status === 'Selesai' && <Badge className="bg-emerald-50 text-emerald-600 border border-emerald-200/60 rounded-lg px-3 py-1.5 font-bold shadow-sm shadow-emerald-100">Selesai</Badge>}
                             {user.status === 'Belum' && <Badge variant="outline" className="text-slate-500 rounded-lg px-3 py-1.5 font-bold border-slate-200 bg-slate-50 shadow-sm shadow-slate-100">Belum Mulai</Badge>}
-                            {user.status === 'Proses' && <Badge className="bg-amber-50 text-amber-600 hover:bg-amber-100 border border-amber-200/60 rounded-lg px-3 py-1.5 font-bold shadow-sm shadow-amber-100">Dalam Proses</Badge>}
-                         </TableCell>
-                         <TableCell className="px-6 py-5 text-right font-extrabold text-xl">
-                            {user.score ? (
-                               <span className={user.score > 70 ? 'text-rose-600' : 'text-emerald-600'}>{user.score}</span>
-                            ) : (
-                               <span className="text-slate-300 font-medium text-lg">-</span>
-                            )}
+                            {user.status === 'Proses' && <Badge className="bg-amber-50 text-amber-600 border border-amber-200/60 rounded-lg px-3 py-1.5 font-bold shadow-sm shadow-amber-100">Dalam Proses</Badge>}
                          </TableCell>
                       </TableRow>
                    ))}
@@ -109,6 +139,69 @@ export default function ProjectRespondentsPage({ params }: { params: Promise<{ i
            )}
         </CardContent>
       </Card>
+
+      <Dialog open={!!selectedUser} onOpenChange={(open) => !open && setSelectedUser(null)}>
+        <DialogContent className="sm:max-w-md bg-white border-slate-200">
+           {selectedUser && (
+             <>
+               <DialogHeader>
+                  <div className="flex items-center justify-between">
+                    <DialogTitle className="text-slate-800">Detail Responden</DialogTitle>
+                    <Button 
+                      variant="destructive" 
+                      size="sm" 
+                      onClick={() => handleDelete(selectedUser.id)}
+                      disabled={isDeleting}
+                      className="h-8 px-3 text-xs bg-rose-500 hover:bg-rose-600 text-white"
+                    >
+                      {isDeleting ? <Loader2 className="w-3 h-3 mr-2 animate-spin" /> : <Trash2 className="w-3 h-3 mr-2" />}
+                      Hapus Responden
+                    </Button>
+                  </div>
+               </DialogHeader>
+               <div className="py-2 space-y-4">
+                  <div className="grid grid-cols-2 gap-3 text-sm border-b border-slate-100 pb-4">
+                     <div>
+                       <p className="text-slate-500 mb-1 text-xs uppercase tracking-wider font-bold">Nama</p>
+                       <p className="font-semibold text-slate-800">{selectedUser.name}</p>
+                     </div>
+                     <div>
+                       <p className="text-slate-500 mb-1 text-xs uppercase tracking-wider font-bold">Status Survei</p>
+                       <p className="font-semibold text-slate-800">{selectedUser.status}</p>
+                     </div>
+                     <div>
+                       <p className="text-slate-500 mb-1 text-xs uppercase tracking-wider font-bold">Departemen</p>
+                       <p className="font-semibold text-slate-800">{selectedUser.department}</p>
+                     </div>
+                     <div>
+                       <p className="text-slate-500 mb-1 text-xs uppercase tracking-wider font-bold">Jabatan</p>
+                       <p className="font-semibold text-slate-800">{selectedUser.role}</p>
+                     </div>
+                  </div>
+                  
+                  {selectedUser.aspects ? (
+                     <div className="space-y-3 pt-2">
+                        <div className="flex justify-between items-center pb-3 mb-2 border-b border-slate-100">
+                          <span className="font-bold text-slate-700">Total Skor Stres</span>
+                          <span className={`font-extrabold text-xl ${selectedUser.score > 70 ? 'text-rose-600' : 'text-emerald-600'}`}>{selectedUser.score}</span>
+                        </div>
+                        {Object.entries(selectedUser.aspects).map(([aspectName, aspectScore]) => (
+                           <div key={aspectName} className="flex justify-between items-center text-sm px-1 py-1.5 hover:bg-slate-50 rounded-md transition-colors">
+                              <span className="text-slate-600 font-medium">{aspectName}</span>
+                              <span className="font-bold text-slate-800 bg-slate-100 px-2 py-0.5 rounded text-xs">{String(aspectScore)}</span>
+                           </div>
+                        ))}
+                     </div>
+                  ) : (
+                     <div className="text-center py-6">
+                       <p className="text-slate-500 text-sm font-medium">Responden ini belum menyelesaikan survei sehingga data aspek belum tersedia.</p>
+                     </div>
+                  )}
+               </div>
+             </>
+           )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

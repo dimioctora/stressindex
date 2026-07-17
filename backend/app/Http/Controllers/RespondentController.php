@@ -34,4 +34,14 @@ class RespondentController extends Controller
 
         return response()->json($respondents);
     }
+
+    public function destroy($id)
+    {
+        $respondent = Respondent::find($id);
+        if (!$respondent) {
+            return response()->json(['message' => 'Respondent not found'], 404);
+        }
+        $respondent->delete();
+        return response()->json(['message' => 'Respondent deleted successfully']);
+    }
 }
